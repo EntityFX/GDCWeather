@@ -1,6 +1,7 @@
 <?php
 
 namespace app\utils;
+use app\utils\mappers\BusinessLogicMapperBase;
 use yii\di\ServiceLocator;
 
 /**
@@ -8,6 +9,9 @@ use yii\di\ServiceLocator;
  *
  * @author EntityFX
  * @package Kontinent\Components\Common
+ *
+ * @property-read BusinessLogicMapperBase $mapper
+ *
  */
 abstract class ManagerBase extends ComponentBase
 {
@@ -15,7 +19,23 @@ abstract class ManagerBase extends ComponentBase
     const SERVICE_CATEGORY    = 'application.components.services';
     const FAULT_BAD_OPERATION = 111;
 
-    public function __construct() {
+    /**
+     * @var BusinessLogicMapperBase;
+     *      */
+    private $_mapper;
 
+    public function __construct() {
+        $this->_mapper = $this->initMapper();
+    }
+
+    /**
+     * @return BusinessLogicMapperBase
+     */
+    protected function getMapper() {
+        return $this->_mapper;
+    }
+
+    protected function initMapper() {
+        return null;
     }
 }

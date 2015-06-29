@@ -1,11 +1,11 @@
 <?php
 
 namespace app\utils\filters;
-use yii\base\Model;
+use yii\base\Object;
 
 /**
  * Class EntityFx
  */
-abstract class FilterBase extends Model {
+abstract class FilterBase extends Object {
 
 }

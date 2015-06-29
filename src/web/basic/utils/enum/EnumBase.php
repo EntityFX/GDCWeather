@@ -1,6 +1,8 @@
 <?php
 
 namespace app\utils\enum;
+use Exception;
+use ReflectionClass;
 
 /**
  * Class EnumBase
