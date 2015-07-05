@@ -60,6 +60,9 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
         ],
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
     ],
     'params' => $params,
 ];
