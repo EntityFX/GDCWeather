@@ -2,6 +2,7 @@
 
 namespace app\utils\order;
 
+use app\utils\enum\EnumBase;
 use app\utils\enum\OrderDirectionEnum;
 
 
@@ -11,7 +12,7 @@ use app\utils\enum\OrderDirectionEnum;
  * @author EntityFX <artem.solopiy@gmail.com>
  * @package Kontinent\Components\Common\Order
  */
-abstract class OrderBase implements IOrder {
+abstract class OrderBase extends EnumBase implements IOrder {
 
     /**
      * @var string|int
@@ -24,8 +25,12 @@ abstract class OrderBase implements IOrder {
      */
     private $_direction;
 
-    function __construct() {
-        $this->_direction = new OrderDirectionEnum(OrderDirectionEnum::ASC);
+    const ID = 'id';
+
+    function __construct(OrderDirectionEnum $direction = null) {
+        $this->_direction = $direction == null
+            ? new OrderDirectionEnum(OrderDirectionEnum::ASC)
+            : $direction;
     }
 
     /**
@@ -75,7 +80,7 @@ abstract class OrderBase implements IOrder {
     }
 
     /**
-     * @param $attribute Аттрибут сортировки
+     * @param $attribute string Атрибут сортировки
      */
     public function setAttribute($attribute) {
         $this->_attribute = (string)$attribute;

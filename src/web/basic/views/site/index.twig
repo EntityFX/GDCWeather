@@ -1,2 +1,29 @@
+{{ use('yii/grid/GridView') }}
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                Minimum temperature: {{ weatherStatistics.minimumTemperature }}
+            </div>
+            <div class="col-sm-4">
+                Average temperature: {{ weatherStatistics.averageTemperature }}
+            </div>
+            <div class="col-sm-4">
+                Maximum temperature: {{ weatherStatistics.maximumTemperature }}
+            </div>
+        </div>
+    </div>
+</section>
 <main>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                {{ grid_view_widget({
+                        'dataProvider' : weatherDataProviderModel
+                    })
+                }}
+            </div>
+        </div>
+    </div>
 </main>

@@ -1,7 +1,9 @@
 <?php
 
 namespace app\utils;
+use app\utils\exceptions\ManagerException;
 use app\utils\mappers\BusinessLogicMapperBase;
+use app\utils\order\OrderBase;
 use yii\di\ServiceLocator;
 
 /**
@@ -37,5 +39,11 @@ abstract class ManagerBase extends ComponentBase
 
     protected function initMapper() {
         return null;
+    }
+
+    protected function getOrderExpression(OrderBase $order, callable $func) {
+        $fieldName = $func($order);
+        if (empty($fieldName)) return '';
+        return $fieldName . ' '. $order->getDirection()->getValue();
     }
 }

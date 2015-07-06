@@ -22,4 +22,6 @@ interface WeatherDataManagerInterface {
      * @return WeatherDataRetrieveResult
      */
     function retrieve(WeatherDataRetrieveFilterBase $filter, Limit $limit, WeatherDataRetrieveOrder $order);
+
+    function getIntervalsList();
 }

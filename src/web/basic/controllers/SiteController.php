@@ -5,8 +5,10 @@ namespace app\controllers;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveLastFilter;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\implementation\weatherData\WeatherDataManager;
+use app\utils\enum\OrderDirectionEnum;
 use app\utils\Limit;
 use Yii;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
@@ -32,10 +34,21 @@ class SiteController extends Controller
         $result = $manager->retrieve(
             new WeatherDataRetrieveLastFilter(),
             new Limit(),
-            new WeatherDataRetrieveOrder()
+            new WeatherDataRetrieveOrder(new OrderDirectionEnum(OrderDirectionEnum::DESC))
         );
-        VarDumper::dump($result, 10, true);
-        return $this->render('index.twig');
+
+        $weatherDataProvider = new ArrayDataProvider();
+        $weatherDataProvider->setModels($result->dataItems);
+        $weatherDataProvider->setTotalCount($result->totalItems);
+        $model = [
+            'weatherDataProviderModel' => $weatherDataProvider,
+            'weatherStatistics' => $result->statistics,
+            'filterDropdowns' => [
+                'intervalList' => $manager->getIntervalsList()
+            ]
+        ];
+        //VarDumper::dump($result, 10, true);
+        return $this->render('index.twig', $model);
     }
 
 }

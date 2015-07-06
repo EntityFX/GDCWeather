@@ -1,5 +1,4 @@
 <?php
-
 $params = require(__DIR__ . '/params.php');
 
 $config = [
@@ -59,6 +58,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
+        ],
+        'assetManager' => [
+            'appendTimestamp' => true,
         ],
     ],
     'params' => $params,

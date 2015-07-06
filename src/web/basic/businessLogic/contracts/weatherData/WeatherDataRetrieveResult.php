@@ -53,7 +53,7 @@ use yii\base\Object;
     /**
      * @param \app\businessLogic\contracts\weatherData\WeatherDataItem[] $dataItems
      */
-    public function setDataItems(SplFixedArray $dataItems) {
+    public function setDataItems(array $dataItems) {
         $this->_dataItems = $dataItems;
     }
 
