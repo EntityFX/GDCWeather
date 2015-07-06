@@ -1,4 +1,6 @@
 {{ use('yii/grid/GridView') }}
+{{ use('app/assets/views/SiteIndexAsset') }}
+{{ register_site_index_asset() }}
 
 <section>
     <div class="container">
@@ -15,6 +17,10 @@
         </div>
     </div>
 </section>
+<section>
+    <canvas id="weather-chart"></canvas>
+</section>
+
 <main>
     <div class="container">
         <div class="row">
