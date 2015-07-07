@@ -70,9 +70,12 @@ if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = 'yii\debug\Module';
+    $config['modules']['allowedIPs'] = ['*', '127.0.0.1'];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = 'yii\gii\Module';
 }
+
+//\yii\helpers\VarDumper::dump(YII_ENV_DEV);
 
 return $config;

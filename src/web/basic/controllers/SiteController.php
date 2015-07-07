@@ -10,6 +10,7 @@ use app\utils\Limit;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -37,6 +38,8 @@ class SiteController extends Controller
             new WeatherDataRetrieveOrder(new OrderDirectionEnum(OrderDirectionEnum::DESC))
         );
 
+        $manager->retrieveChartData(new WeatherDataRetrieveLastFilter());
+
         $weatherDataProvider = new ArrayDataProvider();
         $weatherDataProvider->setModels($result->dataItems);
         $weatherDataProvider->setTotalCount($result->totalItems);
@@ -51,4 +54,8 @@ class SiteController extends Controller
         return $this->render('index.twig', $model);
     }
 
+    public function actionData() {
+        $manager = new WeatherDataManager();
+        return Json::encode($manager->retrieveChartData(new WeatherDataRetrieveLastFilter()));
+    }
 }

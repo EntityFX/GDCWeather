@@ -6,6 +6,7 @@ use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilterBase;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveLastFilter;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
+use app\businessLogic\contracts\weatherData\WeatherChartItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
 use app\businessLogic\contracts\weatherData\WeatherDataRetrieveResult;
 use app\businessLogic\contracts\weatherData\WeatherDataStatistics;
@@ -123,5 +124,43 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
             WeatherDataBackIntervalEnum::LAST_THREE_DAYS    => 'Last 3 days',
             WeatherDataBackIntervalEnum::LAST_WEEK          => 'Last week',
         ];
+    }
+
+    /**
+     * @param WeatherDataRetrieveFilterBase $filter
+     * @return \app\businessLogic\contracts\weatherData\WeatherChartItem[]
+     */
+    function retrieveChartData(WeatherDataRetrieveFilterBase $filter)
+    {
+        $result = [];
+        $retrieveQuery = WeatherPollingDataEntity::find();
+
+        if ($filter instanceof WeatherDataRetrieveLastFilter) {
+            $currentDateTime = new DateTime();
+            $res             = \DateInterval::createFromDateString(
+                $this->_intervalMap[$filter->backInterval->getValue()]
+            );
+            $backTime        = $currentDateTime->add($res)->format('Y-m-d H:i:s');
+            $retrieveQuery   = $retrieveQuery->where(
+                ['>=', 'dateTime', $backTime]
+            );
+        }
+
+
+        $weatherDataEntityItems = $retrieveQuery
+            ->limit(1000)
+            ->all();
+
+        /** @var WeatherPollingDataEntity $item */
+        foreach ($weatherDataEntityItems as $item) {
+            $resItem = new WeatherChartItem();
+            $resItem->key = $item->id;
+            $resItem->dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $item->dateTime);
+            $resItem->value = $item->temp;
+
+            $result[] = $resItem;
+        }
+
+        return $result;
     }
 }
