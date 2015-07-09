@@ -8,26 +8,27 @@
 
 namespace app\businessLogic\contracts\weatherData;
 
+use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilterBase;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\utils\Limit;
 
 interface WeatherDataManagerInterface {
     /**
-     * @param WeatherDataRetrieveFilterBase $filter
+     * @param WeatherDataRetrieveFilter $filter
      *
      * @param \app\utils\Limit              $limit
      * @param WeatherDataRetrieveOrder      $order
      *
      * @return WeatherDataRetrieveResult
      */
-    function retrieve(WeatherDataRetrieveFilterBase $filter, Limit $limit, WeatherDataRetrieveOrder $order);
+    function retrieve(WeatherDataRetrieveFilter $filter, Limit $limit, WeatherDataRetrieveOrder $order);
 
     /**
-     * @param WeatherDataRetrieveFilterBase $filter
+     * @param WeatherDataRetrieveFilter $filter
      * @return WeatherChartItem[]
      */
-    function retrieveChartData(WeatherDataRetrieveFilterBase $filter);
+    function retrieveChartData(WeatherDataRetrieveFilter $filter);
 
     function getIntervalsList();
 }

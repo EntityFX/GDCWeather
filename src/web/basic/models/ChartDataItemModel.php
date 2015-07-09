@@ -28,4 +28,11 @@ class ChartDataItemModel extends Model {
      * @var float
      */
     public $temperature;
+
+    /**
+     * @var float
+     */
+    public $pressure;
+
+    public $mmHg;
 }

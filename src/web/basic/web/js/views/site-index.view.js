@@ -2,33 +2,58 @@ $(function() {
     "use strict";
     Chart.defaults.global.responsive = true;
     Chart.defaults.global.maintainAspectRatio = false;
-    var ctx = $("#weather-chart").get(0).getContext("2d");
+    var temperatureCanvas = $("#temperature-chart").get(0).getContext("2d");
+    var pressureCanvas = $("#pressure-chart").get(0).getContext("2d");
 
-    var data = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [
-            {
-                label: "My First dataset",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [65, 59, 80, 81, 56, 55, 40]
-            },
-            {
-                label: "My Second dataset",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
-                data: [28, 48, 40, 19, 86, 27, 90]
+    $.getJSON("/chart-data", function (data) {
+        var temperatureChartSettings = {
+            'labels': [],
+            'datasets': [
+                {
+                    label: "Temperature",
+                    fillColor: "rgba(110,220,220,0.2)",
+                    strokeColor: "rgba(110,220,220,1)",
+                    pointColor: "rgba(110,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: []
+                }
+            ]
+        };
+
+        var pressureChartSettings = {
+            'labels': [],
+            'datasets': [
+                {
+                    label: "Pressure",
+                    fillColor: "rgba(110,110,220,0.2)",
+                    strokeColor: "rgba(110,110,220,1)",
+                    pointColor: "rgba(110,110,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(110,110,220,1)",
+                    data: []
+                }
+            ]
+        };
+
+
+        data.forEach(
+            function (element, index, array) {
+                temperatureChartSettings.labels.push(element.dateTime);
+                pressureChartSettings.labels.push(element.dateTime);
+                temperatureChartSettings.datasets[0].data.push(element.temperature);
+                pressureChartSettings.datasets[0].data.push(element.mmHg);
             }
-        ]
-    };
+        );
 
-    var myLineChart = new Chart(ctx).Line(data);
+        new Chart(temperatureCanvas).Line(temperatureChartSettings, {
+            'pointHitDetectionRadius': 5
+        });
+        new Chart(pressureCanvas).Line(pressureChartSettings, {
+            'pointHitDetectionRadius': 5
+        });
+    });
+
 });

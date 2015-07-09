@@ -4,21 +4,62 @@ namespace app\businessLogic\contracts\weatherData\filters;
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\enums\WeatherDataFilterTypeEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilterBase;
+use yii\base\Object;
 use yii\helpers\VarDumper;
 
 /**
- * Class WeatherDataRetrieveLastFilter
+ * Class WeatherDataRetrieveFilter
  *
  * @package app\businessLogic\contracts\weatherData\filters
  *
  * @property WeatherDataBackIntervalEnum $backInterval
+ * @property \DateTime $startDateTime
+ * @property int $countPoints
  */
-class WeatherDataRetrieveLastFilter extends WeatherDataRetrieveFilterBase {
+class WeatherDataRetrieveFilter extends Object {
 
     /**
      * @var WeatherDataBackIntervalEnum
      */
     private $_backInterval;
+
+    /**
+     * @var int
+     */
+    private $_countPoints = 50;
+
+    /**
+     * @param int $countPoints
+     */
+    public function setCountPoints($countPoints) {
+        $this->_countPoints = (int)$countPoints;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountPoints() {
+        return $this->_countPoints;
+    }
+
+    /**
+     * @param \DateTime $startDateTime
+     */
+    public function setStartDateTime($startDateTime) {
+        $this->_startDateTime = $startDateTime;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStartDateTime() {
+        return $this->_startDateTime;
+    }
+
+    /**
+     * @var \DateTime
+     */
+    private $_startDateTime;
 
     /**
      * @param \app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum $backInterval
@@ -35,17 +76,9 @@ class WeatherDataRetrieveLastFilter extends WeatherDataRetrieveFilterBase {
     }
 
     function __construct(WeatherDataBackIntervalEnum $backInterval = null) {
-        parent::__construct();
-        if ($this->_backInterval === null ) {
-            $this->_backInterval = new WeatherDataBackIntervalEnum(WeatherDataBackIntervalEnum::LAST_TEN_MINUTES);
+        if ($backInterval === null) {
+            $this->_backInterval = new WeatherDataBackIntervalEnum(WeatherDataBackIntervalEnum::LAST_HOUR);
         }
-    }
-
-
-    /**
-     * @return WeatherDataFilterTypeEnum
-     */
-    protected function initFilterType() {
-        return new WeatherDataFilterTypeEnum(WeatherDataFilterTypeEnum::LAST_DATA);
+        $this->_startDateTime = new \DateTime();
     }
 }

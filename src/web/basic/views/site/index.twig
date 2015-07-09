@@ -1,7 +1,6 @@
 {{ use('yii/grid/GridView') }}
 {{ use('app/assets/views/SiteIndexAsset') }}
 {{ register_site_index_asset() }}
-
 <section>
     <div class="container">
         <div class="row">
@@ -18,17 +17,43 @@
     </div>
 </section>
 <section>
-    <canvas id="weather-chart"></canvas>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10">
+                <canvas id="temperature-chart" height="300"></canvas>
+            </div>
+            <div class="col-sm-1">
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10">
+                <canvas id="pressure-chart" height="300"></canvas>
+            </div>
+            <div class="col-sm-1">
+            </div>
+        </div>
+    </div>
 </section>
 
 <main>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12">
-                {{ grid_view_widget({
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10">
+                <div class="table-responsive">
+                    {{ grid_view_widget({
                         'dataProvider' : weatherDataProviderModel
-                    })
-                }}
+                    }) }}
+                </div>
+            </div>
+            <div class="col-sm-1">
             </div>
         </div>
     </div>
