@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-twig": "^2.0",
-        "bower-asset/chartjs" : "*"
+        "kartik-v/yii2-widgets": "*",
+        "bower-asset/chartjs": "1.0.2"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -13,16 +13,15 @@ namespace app\assets;
 use yii\web\AssetBundle;
 
 class ChartJsAsset extends AssetBundle{
-    //public $sourcePath = '@bower/chartjs';
+    public $sourcePath = '@bower/chartjs';
 
-    public $basePath = "@webroot";
+    //public $basePath = "@webroot";
 
-    public $baseUrl = "@web";
+    //public $baseUrl = "@web";
 
     public $jsOptions = ['position' => \yii\web\View::POS_END];
 
     public function init() {
-        parent::init();
-        $this->js[] = YII_ENV_PROD  ? 'js/Chart.min.js': 'js/Chart.js';
+        $this->js = YII_DEBUG ? ['Chart.js'] : ['Chart.min.js'];
     }
 }

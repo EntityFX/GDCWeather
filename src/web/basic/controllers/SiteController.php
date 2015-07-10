@@ -2,22 +2,22 @@
 
 namespace app\controllers;
 
+use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
+use app\businessLogic\contracts\weatherData\WeatherDataItem;
 use app\businessLogic\implementation\weatherData\WeatherDataManager;
+use app\models\ContactForm;
+use app\models\FilterFormModel;
+use app\models\LoginForm;
+use app\models\WeatherDataItemModel;
 use app\utils\dataProvider\SimpleListDataProvider;
 use app\utils\enum\OrderDirectionEnum;
 use app\utils\Limit;
 use Yii;
-use yii\data\ArrayDataProvider;
-use yii\filters\AccessControl;
+use yii\helpers\FormatConverter;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
-use app\dataAccess\entities\WeatherPollingDataEntity;
 
 class SiteController extends Controller {
     public function actions() {
@@ -29,12 +29,21 @@ class SiteController extends Controller {
     }
 
     public function actionIndex() {
+
+        $filterFormModel = new FilterFormModel();
+        $retrieveFilter  = new WeatherDataRetrieveFilter();
+        if (Yii::$app->request->isPost) {
+            $filterFormModel->attributes = Yii::$app->request->post('FilterFormModel');
+            if ($filterFormModel->validate()) {
+                $retrieveFilter->backInterval = new WeatherDataBackIntervalEnum((int)$filterFormModel->backPeriod);
+            }
+        }
+
         $manager = new WeatherDataManager();
 
         $limit = new Limit();
 
-
-        $manager->retrieveChartData(new WeatherDataRetrieveFilter());
+        $manager->retrieveChartData($retrieveFilter);
 
         //var_dump($result->totalItems);
 
@@ -50,33 +59,39 @@ class SiteController extends Controller {
         ]);
 
         $result = $manager->retrieve(
-            new WeatherDataRetrieveFilter(),
+            $retrieveFilter,
             $limit,
             new WeatherDataRetrieveOrder(new OrderDirectionEnum(OrderDirectionEnum::DESC))
         );
 
-        $weatherDataProvider->setModels($result->dataItems);
-        $weatherDataProvider->setTotalCountInResult($result->totalItems);
 
-        //var_dump($weatherDataProvider);
+        $weatherDataProvider->setModels(
+            iterator_to_array(self::prepareStaticWeatherDataModel($result->dataItems))
+        );
+        $weatherDataProvider->setTotalCountInResult($result->totalItems);
 
         //$weatherDataProvider->setModels($result->dataItems);
         //$weatherDataProvider->setTotalCount($result->totalItems);
         $model = [
-            'weatherDataProviderModel' => $weatherDataProvider,
-            'weatherStatistics' => $result->statistics,
-            'filterDropdowns'   => [
-                'intervalList' => $manager->getIntervalsList()
-            ]
+            'weatherDataProviderModel'   => $weatherDataProvider,
+            'weatherStatistics'          => $result->statistics,
+            'filterForm'                 => $filterFormModel,
+            'backPeriodDropDownListData' => $manager->getIntervalsList()
         ];
 
-        //VarDumper::dump($result, 10, true);
         return $this->render('index.twig', $model);
     }
 
-    public function actionData() {
-        $manager = new WeatherDataManager();
-
-        return Json::encode($manager->retrieveChartData(new WeatherDataRetrieveFilter()));
+    private static function prepareStaticWeatherDataModel(array $weatherDataItems) {
+        /** @var WeatherDataItem $item */
+        foreach ($weatherDataItems as $item) {
+            $modelItem           = new WeatherDataItemModel();
+            $modelItem->id       = $item->id;
+            $modelItem->temp     = $item->temperature;
+            $modelItem->pressure = $item->pressure;
+            $modelItem->alt      = $item->altitude;
+            $modelItem->dateTime = $item->createDateTime;
+            yield $modelItem;
+        }
     }
 }

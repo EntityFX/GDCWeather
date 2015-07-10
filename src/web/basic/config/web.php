@@ -5,6 +5,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
+    'timeZone'   => 'Europe/Moscow',
     'bootstrap' => ['log'],
     'name'      => 'GDCWeather',
     'layout' => 'main.twig',
@@ -50,8 +51,16 @@ $config = [
                     'options' => [
                         'auto_reload' => true,
                     ],
-                    'globals' => ['html' => '\yii\helpers\Html'],
-                    'uses' => ['yii\bootstrap'],
+                    'globals'   => [
+                        'html'           => '\yii\helpers\Html',
+                        'DateTimePicker' => "kartik\\datetime\\DateTimePicker"
+                    ],
+                    'uses'      => [
+                        'yii\bootstrap'
+                    ],
+                    'functions' => [
+                        't' => '\Yii::t'
+                    ]
                 ],
             ],
         ],

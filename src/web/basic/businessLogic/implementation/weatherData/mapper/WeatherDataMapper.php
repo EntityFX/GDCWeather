@@ -58,6 +58,7 @@ class WeatherDataMapper extends BusinessLogicMapperBase {
         $contract->pressure = $entity->pressure;
         $contract->altitude = $entity->alt;
         $contract->createDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $entity->dateTime);
-        return $entity;
+
+        return $contract;
     }
 }

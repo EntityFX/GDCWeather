@@ -1,17 +1,47 @@
-{{ use('yii/grid/GridView') }}
-{{ use('app/assets/views/SiteIndexAsset') }}
+{{ use('/yii/grid/GridView') }}
+{{ use('/app/assets/views/SiteIndexAsset') }}
+{{ use('/kartik/datetime/DateTimePicker') }}
+
 {{ register_site_index_asset() }}
 <section>
     <div class="container">
         <div class="row">
+            <div class="col-sm-12">
+                {% set datePickerClassName = DateTimePicker.classname() %}
+                {% set filterFormWiget = active_form_begin({
+                'id' : 'filter-form',
+                'options' : {'class' : 'form-inline'},
+                'enableClientValidation' : true,
+                'fieldConfig' : {
+                'template' : '{label}\n{input}{hint}'
+                }
+                }) %}
+                {{ filterFormWiget.field(filterForm, 'startDateTime')
+                .widget(datePickerClassName,
+                {
+                    'pluginOptions' : {
+                    'format' : 'dd.mm.yy, hh:ii'
+                }
+                }
+                ) | raw }}
+                {{ filterFormWiget.field(filterForm, 'backPeriod').dropDownList(backPeriodDropDownListData) | raw }}
+                {{ html.submitButton('Submit', {'class' : 'btn btn-primary'}) | raw }}
+                {{ active_form_end() }}
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
             <div class="col-sm-4">
-                Minimum temperature: {{ weatherStatistics.minimumTemperature }}
+                {{ t('app', '#Minimum temperature:#') }} {{ weatherStatistics.minimumTemperature }}
             </div>
             <div class="col-sm-4">
-                Average temperature: {{ weatherStatistics.averageTemperature }}
+                {{ t('app', '#Average temperature:#') }} {{ weatherStatistics.averageTemperature }}
             </div>
             <div class="col-sm-4">
-                Maximum temperature: {{ weatherStatistics.maximumTemperature }}
+                {{ t('app', '#Maximum temperature:#') }} {{ weatherStatistics.maximumTemperature }}
             </div>
         </div>
     </div>
@@ -49,7 +79,14 @@
             <div class="col-sm-10">
                 <div class="table-responsive">
                     {{ grid_view_widget({
-                        'dataProvider' : weatherDataProviderModel
+                        'dataProvider' : weatherDataProviderModel,
+                        'columns' : [
+                        'id',
+                        'temp',
+                        'pressure',
+                        'alt',
+                        'dateTime:datetime'
+                        ]
                     }) }}
                 </div>
             </div>

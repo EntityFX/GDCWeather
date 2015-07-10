@@ -23,12 +23,12 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
 
     private $_intervalMap = [
         WeatherDataBackIntervalEnum::LAST_HOUR        => '-1 hour',
-        WeatherDataBackIntervalEnum::LAST_THREE_HOURS => '3 hours',
-        WeatherDataBackIntervalEnum::LAST_SIX_HOURS   => '6 hours',
-        WeatherDataBackIntervalEnum::LAST_HALF_DAY    => '12 hours',
-        WeatherDataBackIntervalEnum::LAST_DAY         => '1 day',
-        WeatherDataBackIntervalEnum::LAST_WEEK        => '1 week',
-        WeatherDataBackIntervalEnum::LAST_YEAR        => '1 year',
+        WeatherDataBackIntervalEnum::LAST_THREE_HOURS => '-3 hours',
+        WeatherDataBackIntervalEnum::LAST_SIX_HOURS   => '-6 hours',
+        WeatherDataBackIntervalEnum::LAST_HALF_DAY    => '-12 hours',
+        WeatherDataBackIntervalEnum::LAST_DAY         => '-1 day',
+        WeatherDataBackIntervalEnum::LAST_WEEK        => '-1 week',
+        WeatherDataBackIntervalEnum::LAST_YEAR        => '-1 year',
     ];
 
     function __construct() {
@@ -48,13 +48,19 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
 
         $retrieveQuery = WeatherPollingDataEntity::find();
 
-        $currentDateTime = new DateTime();
+        $toDateTime   = clone $filter->startDateTime;
+        $fromDateTime = $filter->startDateTime;
+
         $res             = \DateInterval::createFromDateString(
             $this->_intervalMap[$filter->backInterval->getValue()]
         );
-        $backTime        = $currentDateTime->add($res)->format('Y-m-d H:i:s');
+
+        $fromDateTime->add($res);
+
+        $fromDateTimeFormatted = $fromDateTime->format('Y-m-d H:i:s');
+        $toDateTimeFormatted   = $toDateTime->format('Y-m-d H:i:s');
         $retrieveQuery   = $retrieveQuery->where(
-            ['>=', 'dateTime', $backTime]
+            ['between', 'dateTime', $fromDateTimeFormatted, $toDateTimeFormatted]
         );
 
 
