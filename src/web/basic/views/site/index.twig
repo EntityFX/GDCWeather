@@ -25,6 +25,7 @@
                 }
                 ) | raw }}
                 {{ filterFormWiget.field(filterForm, 'backPeriod').dropDownList(backPeriodDropDownListData) | raw }}
+                {{ filterFormWiget.field(filterForm, 'pointsCount').dropDownList(chartPointsDropDownListData) | raw }}
                 {{ html.submitButton('Submit', {'class' : 'btn btn-primary'}) | raw }}
                 {{ active_form_end() }}
             </div>
@@ -95,3 +96,10 @@
         </div>
     </div>
 </main>
+
+{% set pageJs = '$("document").ready(function() {
+        var siteIndexpage = new SiteIndexPage(' ~ filterForm.pointsCount ~', "2015-07-10 15:46:00", ' ~ filterForm.backPeriod ~ ');
+        siteIndexpage.init();
+    });' %}
+
+{{ this.registerJs(pageJs) }}

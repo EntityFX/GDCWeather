@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\businessLogic\contracts\weatherData\enums\WeatherChartPointsCountEnum;
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
@@ -70,13 +71,23 @@ class SiteController extends Controller {
         );
         $weatherDataProvider->setTotalCountInResult($result->totalItems);
 
+        $pointsCountList = (new WeatherChartPointsCountEnum(WeatherChartPointsCountEnum::FIFTY)
+        )->getArray();
+
+        $pointsDropDownData = [];
+        foreach ($pointsCountList as $pointItem) {
+            $pointsDropDownData[$pointItem] = $pointItem;
+        }
+
+
         //$weatherDataProvider->setModels($result->dataItems);
         //$weatherDataProvider->setTotalCount($result->totalItems);
         $model = [
             'weatherDataProviderModel'   => $weatherDataProvider,
             'weatherStatistics'          => $result->statistics,
             'filterForm'                 => $filterFormModel,
-            'backPeriodDropDownListData' => $manager->getIntervalsList()
+            'backPeriodDropDownListData'  => $manager->getIntervalsList(),
+            'chartPointsDropDownListData' => $pointsDropDownData
         ];
 
         return $this->render('index.twig', $model);

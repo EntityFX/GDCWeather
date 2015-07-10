@@ -9,10 +9,12 @@
 
 namespace app\controllers;
 
+use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
 use app\businessLogic\contracts\weatherData\WeatherChartItem;
 use app\businessLogic\implementation\weatherData\WeatherDataManager;
 use app\models\ChartDataItemModel;
+use app\models\ChartDataRequestModel;
 use yii\filters\auth\HttpBasicAuth;
 use Yii;
 
@@ -47,8 +49,18 @@ class ChartDataController extends \yii\rest\Controller {
 
     public function actionIndex() {
         $manager = new WeatherDataManager();
-        $items = $manager->retrieveChartData(new WeatherDataRetrieveFilter());
 
-        return iterator_to_array(self::chartDataToModel($items));
+        $model             = new ChartDataRequestModel();
+        $model->attributes = Yii::$app->request->get();
+        if ($model->validate()) {
+            $retrieveChartDataFilter               = new WeatherDataRetrieveFilter();
+            $retrieveChartDataFilter->countPoints  = $model->pointsCount;
+            $retrieveChartDataFilter->backInterval = new WeatherDataBackIntervalEnum((int)$model->period);
+            $items                                 = $manager->retrieveChartData($retrieveChartDataFilter);
+
+            return iterator_to_array(self::chartDataToModel($items));
+        }
+
+        return [];
     }
 }

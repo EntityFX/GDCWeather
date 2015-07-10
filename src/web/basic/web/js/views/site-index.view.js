@@ -1,12 +1,10 @@
-$(function() {
-    "use strict";
-    Chart.defaults.global.responsive = true;
-    Chart.defaults.global.maintainAspectRatio = false;
-    var temperatureCanvas = $("#temperature-chart").get(0).getContext("2d");
-    var pressureCanvas = $("#pressure-chart").get(0).getContext("2d");
+var SiteIndexPage = (function () {
+    function SiteIndexPage(pointsCount, startDatetime, period) {
+        this._pointsCount = pointsCount;
+        this._startDatetime = startDatetime;
+        this._period = period;
 
-    $.getJSON("/chart-data", function (data) {
-        var temperatureChartSettings = {
+        this._temperatureChartSettings = {
             'labels': [],
             'datasets': [
                 {
@@ -22,7 +20,7 @@ $(function() {
             ]
         };
 
-        var pressureChartSettings = {
+        this._pressureChartSettings = {
             'labels': [],
             'datasets': [
                 {
@@ -38,22 +36,47 @@ $(function() {
             ]
         };
 
+        Chart.defaults.global.responsive = true;
+        Chart.defaults.global.maintainAspectRatio = false;
 
+        this._temperatureCanvas = $("#temperature-chart").get(0).getContext("2d");
+        this._pressureCanvas = $("#pressure-chart").get(0).getContext("2d");
+    }
+
+    SiteIndexPage.prototype.init = function () {
+        this.updateChartData();
+    };
+
+    SiteIndexPage.prototype.updateChartData = function () {
+        var _this = this;
+        $.getJSON("/chart-data",
+            {
+                'pointsCount': _this._pointsCount,
+                'period': _this._period,
+                'startDateTime': _this._startDatetime,
+            },
+            function (data) {
+                _this.chartDataHandler(_this, data);
+            });
+    };
+
+    SiteIndexPage.prototype.chartDataHandler = function (context, data) {
         data.forEach(
             function (element, index, array) {
-                temperatureChartSettings.labels.push(element.dateTime);
-                pressureChartSettings.labels.push(element.dateTime);
-                temperatureChartSettings.datasets[0].data.push(element.temperature);
-                pressureChartSettings.datasets[0].data.push(element.mmHg);
+                context._temperatureChartSettings.labels.push(element.dateTime);
+                context._pressureChartSettings.labels.push(element.dateTime);
+                context._temperatureChartSettings.datasets[0].data.push(element.temperature);
+                context._pressureChartSettings.datasets[0].data.push(element.mmHg);
             }
         );
 
-        new Chart(temperatureCanvas).Line(temperatureChartSettings, {
+        new Chart(context._temperatureCanvas).Line(context._temperatureChartSettings, {
             'pointHitDetectionRadius': 5
         });
-        new Chart(pressureCanvas).Line(pressureChartSettings, {
+        new Chart(context._pressureCanvas).Line(context._pressureChartSettings, {
             'pointHitDetectionRadius': 5
         });
-    });
+    };
 
-});
+    return SiteIndexPage;
+})();
