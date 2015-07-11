@@ -46,6 +46,10 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
     public function retrieve(WeatherDataRetrieveFilter $filter, Limit $limit, WeatherDataRetrieveOrder $order) {
         $result = new WeatherDataRetrieveResult();
 
+        $lastData                               = WeatherPollingDataEntity::find()
+            ->orderBy(['id' => SORT_DESC])
+            ->one();
+
         $retrieveQuery = WeatherPollingDataEntity::find();
 
         $toDateTime   = clone $filter->startDateTime;
@@ -70,6 +74,9 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
                 'MAX(`temp`) AS maxTemp',
                 'MIN(`temp`) AS minTemp',
                 'AVG(`temp`) AS avgTemp',
+                'MAX(`pressure`) AS maxPressure',
+                'MIN(`pressure`) AS minPressure',
+                'AVG(`pressure`) AS avgPressure',
             ]
         )->one();
 
@@ -77,6 +84,9 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
         $weatherDataStatistics->maximumTemperature = $statisticsResult['maxTemp'];
         $weatherDataStatistics->minimumTemperature = $statisticsResult['minTemp'];
         $weatherDataStatistics->averageTemperature = $statisticsResult['avgTemp'];
+        $weatherDataStatistics->maximumPressure = $statisticsResult['maxPressure'];
+        $weatherDataStatistics->minimumPressure = $statisticsResult['minPressure'];
+        $weatherDataStatistics->averagePressure = $statisticsResult['avgPressure'];
 
 
         $countQuery = $retrieveQuery->prepare(new Query());
@@ -145,8 +155,12 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
                 TimeRange,
                 TIMESTAMPADD(SECOND, TimeRange * TIMESTAMPDIFF(SECOND, :from, :to) / :countPoints, :from) TimeRangeStart,
                 TIMESTAMPADD(SECOND, (TimeRange+1) * TIMESTAMPDIFF(SECOND, :from, :to) / :countPoints, :from) TimeRangeEnd,
-                AVG(t2.temp) Temperature,
-                AVG(t2.pressure) Pressure
+                AVG(t2.temp) AverageTemperature,
+                AVG(t2.pressure) AveragePressure,
+                MAX(t2.temp) MaximumTemperature,
+                MAX(t2.pressure) MaximumPressure,
+                MIN(t2.temp) MinimumTemperature,
+                MIN(t2.pressure) MinimumPressure
             FROM (
                 SELECT
                     *,
@@ -185,8 +199,10 @@ SQL;
             $resItem->key           = $item['TimeRange'];
             $resItem->startDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeStart']);
             $resItem->endDateTime   = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeEnd']);
-            $resItem->temperature   = $item['Temperature'];
-            $resItem->pressure      = $item['Pressure'];
+            $resItem->averageTemperature = $item['AverageTemperature'];
+            $resItem->maximumTemperature = $item['MaximumTemperature'];
+            $resItem->minimumTemperature = $item['MinimumTemperature'];
+            $resItem->averagePressure = $item['AveragePressure'];
             yield $resItem;
         }
     }

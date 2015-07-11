@@ -19,6 +19,12 @@ use yii\base\Object;
  * @property float $averageTemperature
  * @property float $minimumTemperature
  * @property float $maximumTemperature
+ * @property float $averagePressure
+ * @property float $minimumPressure
+ * @property float $maximumPressure
+ * @property float $averageMmHg
+ * @property float $minimumMmHg
+ * @property float $maximumMmHg
  *
  */
 class WeatherDataStatistics extends Object {
@@ -27,64 +33,121 @@ class WeatherDataStatistics extends Object {
      * @var float
      */
     private $_averageTemperature;
+    /**
+     * @var float
+     */
+    private $_minimumTemperature;
+    /**
+     * @var float
+     */
+    private $_maximumTemperature;
+
+    /**
+     * @var float
+     */
+    private $_averagePressure;
+    /**
+     * @var float
+     */
+    private $_minimumPressure;
+    /**
+     * @var float
+     */
+    private $_maximumPressure;
 
     /**
      * @return float
      */
-    public function getAverageTemperature()
-    {
+    public function getAveragePressure() {
+        return $this->_averagePressure;
+    }
+
+    /**
+     * @param float $averagePressure
+     */
+    public function setAveragePressure($averagePressure) {
+        $this->_averagePressure = $averagePressure;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMinimumPressure() {
+        return $this->_minimumPressure;
+    }
+
+    /**
+     * @param float $minimumPressure
+     */
+    public function setMinimumPressure($minimumPressure) {
+        $this->_minimumPressure = $minimumPressure;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMaximumPressure() {
+        return $this->_maximumPressure;
+    }
+
+    /**
+     * @param float $maximumPressure
+     */
+    public function setMaximumPressure($maximumPressure) {
+        $this->_maximumPressure = $maximumPressure;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAverageTemperature() {
         return $this->_averageTemperature;
     }
 
     /**
      * @param float $averageTemperature
      */
-    public function setAverageTemperature($averageTemperature)
-    {
+    public function setAverageTemperature($averageTemperature) {
         $this->_averageTemperature = (float)$averageTemperature;
     }
 
     /**
      * @return float
      */
-    public function getMinimumTemperature()
-    {
+    public function getMinimumTemperature() {
         return $this->_minimumTemperature;
     }
 
     /**
      * @param float $minimumTemperature
      */
-    public function setMinimumTemperature($minimumTemperature)
-    {
+    public function setMinimumTemperature($minimumTemperature) {
         $this->_minimumTemperature = (float)$minimumTemperature;
     }
 
     /**
      * @return float
      */
-    public function getMaximumTemperature()
-    {
+    public function getMaximumTemperature() {
         return $this->_maximumTemperature;
     }
 
     /**
      * @param float $maximumTemperature
      */
-    public function setMaximumTemperature($maximumTemperature)
-    {
+    public function setMaximumTemperature($maximumTemperature) {
         $this->_maximumTemperature = (float)$maximumTemperature;
     }
 
-    /**
-     * @var float
-     */
-    private $_minimumTemperature;
+    public function getMaximumMmHg() {
+        return WeatherChartItem::calculateMmHg($this->_maximumPressure);
+    }
 
-    /**
-     * @var float
-     */
-    private $_maximumTemperature;
+    public function getMinimumMmHg() {
+        return WeatherChartItem::calculateMmHg($this->_minimumPressure);
+    }
 
-
+    public function getAverageMmHg() {
+        return WeatherChartItem::calculateMmHg($this->_averagePressure);
+    }
 }

@@ -29,9 +29,11 @@ class ChartDataController extends \yii\rest\Controller {
         foreach ($data as $item) {
             $res = new ChartDataItemModel();
             $res->id = $item->key;
-            $res->temperature = $item->temperature;
-            $res->pressure = $item->pressure;
-            $res->mmHg = $item->mmHg;
+            $res->averageTemperature = $item->averageTemperature;
+            $res->maximumTemperature = $item->maximumTemperature;
+            $res->minimumTemperature = $item->minimumTemperature;
+            $res->averagePressure = $item->averagePressure;
+            $res->averageMmHg = $item->averageMmHg;
             $res->dateTime = Yii::$app->formatter->asDatetime($item->startDateTime, "short");
             yield $res;
         }

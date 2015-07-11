@@ -15,9 +15,11 @@ use yii\base\Object;
  * Class WeatherChartItem
  * @package app\businessLogic\contracts\weatherData
  * @property int $key
- * @property float $temperature
- * @property float $pressure
- * @property float $mmHg
+ * @property float $averageTemperature
+ * @property float $maximumTemperature
+ * @property float $minimumTemperature
+ * @property float $averagePressure
+ * @property float $averageMmHg
  * @property \DateTime $startDateTime
  * @property \DateTime $endDateTime
  */
@@ -39,25 +41,61 @@ class WeatherChartItem extends Object {
     /**
      * @var float
      */
-    private $_temperature;
+    private $_averageTemperature;
 
     /**
      * @var float
      */
-    private $_pressure;
+    private $_maximumTemperature;
+    /**
+     * @var float
+     */
+    private $_minimumTemperature;
+    /**
+     * @var float
+     */
+    private $_averagePressure;
 
     /**
      * @return float
      */
-    public function getPressure() {
-        return $this->_pressure;
+    public function getMaximumTemperature() {
+        return $this->_maximumTemperature;
+    }
+
+    /**
+     * @param float $maximumTemperature
+     */
+    public function setMaximumTemperature($maximumTemperature) {
+        $this->_maximumTemperature = $maximumTemperature;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMinimumTemperature() {
+        return $this->_minimumTemperature;
+    }
+
+    /**
+     * @param float $minimumTemperature
+     */
+    public function setMinimumTemperature($minimumTemperature) {
+        $this->_minimumTemperature = $minimumTemperature;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAveragePressure() {
+        return $this->_averagePressure;
     }
 
     /**
      * @param float $pressure
      */
-    public function setPressure($pressure) {
-        $this->_pressure = (float)$pressure;
+    public function setAveragePressure($pressure) {
+        $this->_averagePressure = (float)$pressure;
     }
 
     /**
@@ -105,18 +143,22 @@ class WeatherChartItem extends Object {
     /**
      * @return string
      */
-    public function getTemperature() {
-        return $this->_temperature;
+    public function getAverageTemperature() {
+        return $this->_averageTemperature;
     }
 
     /**
      * @param string $value
      */
-    public function setTemperature($value) {
-        $this->_temperature = (float)$value;
+    public function setAverageTemperature($value) {
+        $this->_averageTemperature = (float)$value;
     }
 
-    public function getMmHg() {
-        return $this->_pressure / 1000 * 7.5006;
+    public function getAverageMmHg() {
+        return static::calculateMmHg($this->_averagePressure);
+    }
+
+    public static function calculateMmHg($pressure) {
+        return $pressure / 1000 * 7.5006;
     }
 }

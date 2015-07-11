@@ -27,12 +27,22 @@ class ChartDataItemModel extends Model {
     /**
      * @var float
      */
-    public $temperature;
+    public $averageTemperature;
 
     /**
      * @var float
      */
-    public $pressure;
+    public $maximumTemperature;
 
-    public $mmHg;
+    /**
+     * @var float
+     */
+    public $minimumTemperature;
+
+    /**
+     * @var float
+     */
+    public $averagePressure;
+
+    public $averageMmHg;
 }

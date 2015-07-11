@@ -26,7 +26,7 @@
                 ) | raw }}
                 {{ filterFormWiget.field(filterForm, 'backPeriod').dropDownList(backPeriodDropDownListData) | raw }}
                 {{ filterFormWiget.field(filterForm, 'pointsCount').dropDownList(chartPointsDropDownListData) | raw }}
-                {{ html.submitButton('Submit', {'class' : 'btn btn-primary'}) | raw }}
+                {{ html.submitButton(t('app', '#Submit#'), {'class' : 'btn btn-primary'}) | raw }}
                 {{ active_form_end() }}
             </div>
         </div>
@@ -36,13 +36,24 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
-                {{ t('app', '#Minimum temperature:#') }} {{ weatherStatistics.minimumTemperature }}
+                {{ t('app', '#Minimum temperature:#') }} {{ weatherStatistics.minimumTemperature }} {{ t('app', '#&deg;C#') | raw }}
             </div>
             <div class="col-sm-4">
-                {{ t('app', '#Average temperature:#') }} {{ weatherStatistics.averageTemperature }}
+                {{ t('app', '#Average temperature:#') }} {{ weatherStatistics.averageTemperature }} {{ t('app', '#&deg;C#') | raw }}
             </div>
             <div class="col-sm-4">
-                {{ t('app', '#Maximum temperature:#') }} {{ weatherStatistics.maximumTemperature }}
+                {{ t('app', '#Maximum temperature:#') }} {{ weatherStatistics.maximumTemperature }} {{ t('app', '#&deg;C#') | raw }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                {{ t('app', '#Minimum pressure:#') }} {{ weatherStatistics.minimumMmHg }}
+            </div>
+            <div class="col-sm-4">
+                {{ t('app', '#Average pressure:#') }} {{ weatherStatistics.averageMmHg }}
+            </div>
+            <div class="col-sm-4">
+                {{ t('app', '#Maximum pressure:#') }} {{ weatherStatistics.maximumMmHg }}
             </div>
         </div>
     </div>
