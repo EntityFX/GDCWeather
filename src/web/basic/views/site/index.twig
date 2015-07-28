@@ -3,6 +3,19 @@
 {{ use('/kartik/datetime/DateTimePicker') }}
 
 {{ register_site_index_asset() }}
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                {{ t('app', '#Current temperature#') }}: {{ lastMeasure.temperature }} {{ t('app', '#&deg;C#') | raw }}
+            </div>
+            <div class="col-sm-6">
+                {{ t('app', '#Current pressure#') }}:{{ lastMeasure.mmHg }} {{ t('app', '#mm. Hg.#') | raw }}
+            </div>
+        </div>
+    </div>
+</section>
 <section>
     <div class="container">
         <div class="row">
@@ -35,25 +48,25 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-sm-4">
-                {{ t('app', '#Minimum temperature:#') }} {{ weatherStatistics.minimumTemperature }} {{ t('app', '#&deg;C#') | raw }}
+            <div class="col-sm-6">
+                <dl class="dl-horizontal">
+                    <dt>{{ t('app', '#Minimum temperature#') }}</dt>
+                    <dd>{{ weatherStatistics.minimumTemperature }} {{ t('app', '#&deg;C#') | raw }}</dd>
+                    <dt>{{ t('app', '#Average temperature#') }}</dt>
+                    <dd>{{ weatherStatistics.averageTemperature }} {{ t('app', '#&deg;C#') | raw }}</dd>
+                    <dt>{{ t('app', '#Maximum temperature#') }}</dt>
+                    <dd>{{ weatherStatistics.maximumTemperature }} {{ t('app', '#&deg;C#') | raw }}</dd>
+                </dl>
             </div>
-            <div class="col-sm-4">
-                {{ t('app', '#Average temperature:#') }} {{ weatherStatistics.averageTemperature }} {{ t('app', '#&deg;C#') | raw }}
-            </div>
-            <div class="col-sm-4">
-                {{ t('app', '#Maximum temperature:#') }} {{ weatherStatistics.maximumTemperature }} {{ t('app', '#&deg;C#') | raw }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4">
-                {{ t('app', '#Minimum pressure:#') }} {{ weatherStatistics.minimumMmHg }}
-            </div>
-            <div class="col-sm-4">
-                {{ t('app', '#Average pressure:#') }} {{ weatherStatistics.averageMmHg }}
-            </div>
-            <div class="col-sm-4">
-                {{ t('app', '#Maximum pressure:#') }} {{ weatherStatistics.maximumMmHg }}
+            <div class="col-sm-6">
+                <dl class="dl-horizontal">
+                    <dt>{{ t('app', '#Minimum pressure#') }}</dt>
+                    <dd>{{ weatherStatistics.minimumMmHg }} {{ t('app', '#mm. Hg.#') | raw }}</dd>
+                    <dt>{{ t('app', '#Average pressure#') }}</dt>
+                    <dd>{{ weatherStatistics.averageMmHg }} {{ t('app', '#mm. Hg.#') | raw }}</dd>
+                    <dt>{{ t('app', '#Maximum pressure#') }}</dt>
+                    <dd>{{ weatherStatistics.maximumMmHg }} {{ t('app', '#mm. Hg.#') | raw }}</dd>
+                </dl>
             </div>
         </div>
     </div>

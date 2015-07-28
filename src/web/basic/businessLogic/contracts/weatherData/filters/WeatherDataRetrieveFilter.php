@@ -5,7 +5,6 @@ use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\enums\WeatherDataFilterTypeEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilterBase;
 use yii\base\Object;
-use yii\helpers\VarDumper;
 
 /**
  * Class WeatherDataRetrieveFilter
@@ -13,8 +12,8 @@ use yii\helpers\VarDumper;
  * @package app\businessLogic\contracts\weatherData\filters
  *
  * @property WeatherDataBackIntervalEnum $backInterval
- * @property \DateTime $startDateTime
- * @property int $countPoints
+ * @property \DateTime                   $startDateTime
+ * @property int                         $countPoints
  */
 class WeatherDataRetrieveFilter extends Object {
 

@@ -4,7 +4,6 @@ namespace app\businessLogic\implementation\weatherData;
 
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
-use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilterBase;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\contracts\weatherData\WeatherChartItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
@@ -38,7 +37,7 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
     /**
      * @param WeatherDataRetrieveFilter $filter
      *
-     * @param \app\utils\Limit $limit
+     * @param \app\utils\Limit         $limit
      * @param WeatherDataRetrieveOrder $order
      *
      * @return WeatherDataRetrieveResult
@@ -46,16 +45,19 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
     public function retrieve(WeatherDataRetrieveFilter $filter, Limit $limit, WeatherDataRetrieveOrder $order) {
         $result = new WeatherDataRetrieveResult();
 
-        $lastData                               = WeatherPollingDataEntity::find()
-            ->orderBy(['id' => SORT_DESC])
-            ->one();
+        $lastDataItem = WeatherPollingDataEntity::find()
+                                                ->orderBy(['id' => SORT_DESC])
+                                                ->limit(1)
+                                                ->one();
+
+        $result->lastMeasure = $this->mapper->entityToContract($lastDataItem);
 
         $retrieveQuery = WeatherPollingDataEntity::find();
 
         $toDateTime   = clone $filter->startDateTime;
         $fromDateTime = $filter->startDateTime;
 
-        $res             = \DateInterval::createFromDateString(
+        $res                                    = \DateInterval::createFromDateString(
             $this->_intervalMap[$filter->backInterval->getValue()]
         );
 
@@ -63,7 +65,7 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
 
         $fromDateTimeFormatted = $fromDateTime->format('Y-m-d H:i:s');
         $toDateTimeFormatted   = $toDateTime->format('Y-m-d H:i:s');
-        $retrieveQuery   = $retrieveQuery->where(
+        $retrieveQuery                          = $retrieveQuery->where(
             ['between', 'dateTime', $fromDateTimeFormatted, $toDateTimeFormatted]
         );
 
@@ -96,9 +98,13 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
         $weatherDataEntityItems = $retrieveQuery
             ->limit($limit->getSize())
             ->offset($limit->getOffset())
-            ->orderBy($this->getOrderExpression($order, function ($param) {
-                return $this->getOrderField($param);
-            }))
+            ->orderBy(
+                $this->getOrderExpression(
+                    $order, function ($param) {
+                    return $this->getOrderField($param);
+                }
+                )
+            )
             ->all();
         $weatherDataItems       = [];
         foreach ($weatherDataEntityItems as $item) {
@@ -195,10 +201,10 @@ SQL;
 
         /** @var WeatherPollingDataEntity $item */
         foreach ($dbRes as $item) {
-            $resItem                = new WeatherChartItem();
-            $resItem->key           = $item['TimeRange'];
-            $resItem->startDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeStart']);
-            $resItem->endDateTime   = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeEnd']);
+            $resItem                  = new WeatherChartItem();
+            $resItem->key             = $item['TimeRange'];
+            $resItem->startDateTime   = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeStart']);
+            $resItem->endDateTime     = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeEnd']);
             $resItem->averageTemperature = $item['AverageTemperature'];
             $resItem->maximumTemperature = $item['MaximumTemperature'];
             $resItem->minimumTemperature = $item['MinimumTemperature'];

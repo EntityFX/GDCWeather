@@ -31,12 +31,13 @@ class WeatherDataMapper extends BusinessLogicMapperBase {
         if (!($contract instanceof WeatherDataItem)) {
             throw new ManagerException("Wrong type of mapping contract");
         }
-        $entity = new WeatherPollingDataEntity();
-        $entity->id = $contract->id;
+        $entity       = new WeatherPollingDataEntity();
+        $entity->id   = $contract->id;
         $entity->temp = $contract->temperature;
         $entity->pressure = $contract->pressure;
-        $entity->alt = $contract->altitude;
+        $entity->alt  = $contract->altitude;
         $entity->dateTime = $contract->createDateTime->format(DateTime::ISO8601);
+
         return $entity;
     }
 
@@ -52,11 +53,11 @@ class WeatherDataMapper extends BusinessLogicMapperBase {
         if (!($entity instanceof WeatherPollingDataEntity)) {
             throw new ManagerException("Wrong type of mapping entity");
         }
-        $contract = new WeatherDataItem();
-        $contract->id = $entity->id;
+        $contract              = new WeatherDataItem();
+        $contract->id          = $entity->id;
         $contract->temperature = $entity->temp;
-        $contract->pressure = $entity->pressure;
-        $contract->altitude = $entity->alt;
+        $contract->pressure    = $entity->pressure;
+        $contract->altitude    = $entity->alt;
         $contract->createDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $entity->dateTime);
 
         return $contract;

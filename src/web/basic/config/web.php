@@ -1,5 +1,6 @@
 <?php
 $params = require(__DIR__ . '/params.php');
+require(__DIR__ . '/ioc.php');
 
 $config = [
     'id' => 'basic',
@@ -72,15 +73,27 @@ $config = [
         'assetManager' => [
             'appendTimestamp' => true,
         ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class'   => 'yii\i18n\PhpMessageSource',
+                    //'basePath' => '@app/messages',
+                    //'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'app'       => 'app.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+            ],
+        ]
     ],
     'params' => $params,
 ];
-
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = 'yii\debug\Module';
-    $config['modules']['allowedIPs'] = ['*', '127.0.0.1'];
+    $config['modules']['debug']['class'] = 'yii\debug\Module';
+    $config['modules']['debug']['allowedIPs'] = ['*'];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = 'yii\gii\Module';

@@ -41,7 +41,7 @@ class SimpleListDataProvider extends BaseDataProvider {
             $pagination->totalCount = $this->getTotalCount();
 
             if ($pagination->getPageSize() > 0) {
-                $models = array_slice($models, $pagination->getOffset(), $pagination->getLimit(), true);
+                //$models = array_slice($models, $pagination->getOffset(), $pagination->getLimit(), true);
             }
         }
 

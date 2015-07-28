@@ -17,8 +17,8 @@ interface WeatherDataManagerInterface {
     /**
      * @param WeatherDataRetrieveFilter $filter
      *
-     * @param \app\utils\Limit              $limit
-     * @param WeatherDataRetrieveOrder      $order
+     * @param \app\utils\Limit         $limit
+     * @param WeatherDataRetrieveOrder $order
      *
      * @return WeatherDataRetrieveResult
      */

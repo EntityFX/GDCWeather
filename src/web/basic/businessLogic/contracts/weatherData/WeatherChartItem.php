@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: odroid
- * Date: 7/7/15
- * Time: 4:37 a.m.
- */
+
 
 namespace app\businessLogic\contracts\weatherData;
 
@@ -14,7 +9,7 @@ use yii\base\Object;
 /**
  * Class WeatherChartItem
  * @package app\businessLogic\contracts\weatherData
- * @property int $key
+ * @property int   $key
  * @property float $averageTemperature
  * @property float $maximumTemperature
  * @property float $minimumTemperature
@@ -154,10 +149,17 @@ class WeatherChartItem extends Object {
         $this->_averageTemperature = (float)$value;
     }
 
+    /**
+     * @return float
+     */
     public function getAverageMmHg() {
         return static::calculateMmHg($this->_averagePressure);
     }
 
+    /**
+     * @param $pressure
+     * @return float
+     */
     public static function calculateMmHg($pressure) {
         return $pressure / 1000 * 7.5006;
     }

@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Гузалия
- * Date: 29.06.15
- * Time: 1:57
- * To change this template use File | Settings | File Templates.
- */
 
 namespace app\businessLogic\contracts\weatherData;
 
-use app\utils\helpers\DateTimeHelper;
 use DateTime;
 use yii\base\Object;
 
@@ -18,10 +10,11 @@ use yii\base\Object;
  *
  * @package app\bussinesLogic\contracts\weatherData
  *
- * @property int $id
+ * @property int   $id
  * @property float $temperature
  * @property float $altitude
  * @property float $pressure
+ * @property float $mmHg
  * @property DateTime $createDateTime
  */
 class WeatherDataItem extends Object {
@@ -51,13 +44,6 @@ class WeatherDataItem extends Object {
     private $_createDateTime;
 
     /**
-     * @param float $altitude
-     */
-    public function setAltitude($altitude) {
-        $this->_altitude = (float)$altitude;
-    }
-
-    /**
      * @return float
      */
     public function getAltitude() {
@@ -65,10 +51,10 @@ class WeatherDataItem extends Object {
     }
 
     /**
-     * @param \DateTime $createDateTime
+     * @param float $altitude
      */
-    public function setCreateDateTime(DateTime $createDateTime) {
-        $this->_createDateTime = $createDateTime;
+    public function setAltitude($altitude) {
+        $this->_altitude = (float)$altitude;
     }
 
     /**
@@ -79,10 +65,10 @@ class WeatherDataItem extends Object {
     }
 
     /**
-     * @param int $id
+     * @param \DateTime $createDateTime
      */
-    public function setId($id) {
-        $this->_id = $id;
+    public function setCreateDateTime(DateTime $createDateTime) {
+        $this->_createDateTime = $createDateTime;
     }
 
     /**
@@ -90,6 +76,20 @@ class WeatherDataItem extends Object {
      */
     public function getId() {
         return (int)$this->_id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id) {
+        $this->_id = $id;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPressure() {
+        return $this->_pressure;
     }
 
     /**
@@ -102,15 +102,8 @@ class WeatherDataItem extends Object {
     /**
      * @return float
      */
-    public function getPressure() {
-        return $this->_pressure;
-    }
-
-    /**
-     * @param float $temperature
-     */
-    public function setTemperature($temperature) {
-        $this->_temperature = (float)$temperature;
+    public function getMmHg() {
+        return WeatherChartItem::calculateMmHg($this->_pressure);
     }
 
     /**
@@ -118,6 +111,13 @@ class WeatherDataItem extends Object {
      */
     public function getTemperature() {
         return $this->_temperature;
+    }
+
+    /**
+     * @param float $temperature
+     */
+    public function setTemperature($temperature) {
+        $this->_temperature = (float)$temperature;
     }
 
 }
