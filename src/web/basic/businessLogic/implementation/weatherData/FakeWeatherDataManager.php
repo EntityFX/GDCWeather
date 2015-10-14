@@ -8,6 +8,7 @@
 namespace app\businessLogic\implementation\weatherData;
 
 
+use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\contracts\weatherData\WeatherChartItem;
