@@ -21,22 +21,22 @@ class WeatherDataItem extends Object {
     /**
      * @var int
      */
-    private $_id;
+    private $_id = 0;
 
     /**
      * @var float
      */
-    private $_temperature;
+    private $_temperature = 0.0;
 
     /**
      * @var float
      */
-    private $_altitude;
+    private $_altitude = 0.0;
 
     /**
      * @var float
      */
-    private $_pressure;
+    private $_pressure = 0.0;
 
     /**
      * @var DateTime

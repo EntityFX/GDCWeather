@@ -64,7 +64,7 @@ class ChartDataController extends \yii\rest\Controller {
      * @param \Iterator $data
      * @return \Generator
      */
-    private static function chartDataToModel(\Iterator &$data) {
+    private static function chartDataToModel(array &$data) {
         /** @var WeatherChartItem $item */
         foreach ($data as $item) {
             $res                     = new ChartDataItemModel();

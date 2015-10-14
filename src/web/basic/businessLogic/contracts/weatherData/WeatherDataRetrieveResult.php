@@ -38,7 +38,7 @@ class WeatherDataRetrieveResult extends Object {
     /**
      * @var int
      */
-    private $_totalItems;
+    private $_totalItems = 0;
 
     /**
      * @return WeatherDataItem[]

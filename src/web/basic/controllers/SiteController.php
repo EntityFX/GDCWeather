@@ -91,10 +91,12 @@ class SiteController extends Controller {
             new WeatherDataRetrieveOrder(new OrderDirectionEnum(OrderDirectionEnum::DESC))
         );
 
+        if (!empty($result->dataItems)) {
+            $weatherDataProvider->setModels(
+                iterator_to_array(self::prepareStaticWeatherDataModel($result->dataItems))
+            );
+        }
 
-        $weatherDataProvider->setModels(
-            iterator_to_array(self::prepareStaticWeatherDataModel($result->dataItems))
-        );
         $weatherDataProvider->setTotalCountInResult($result->totalItems);
 
         $pointsCountList = (

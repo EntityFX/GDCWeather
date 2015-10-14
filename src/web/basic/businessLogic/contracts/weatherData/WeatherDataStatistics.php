@@ -32,28 +32,28 @@ class WeatherDataStatistics extends Object {
     /**
      * @var float
      */
-    private $_averageTemperature;
+    private $_averageTemperature = 0.0;
     /**
      * @var float
      */
-    private $_minimumTemperature;
+    private $_minimumTemperature = 0.0;
     /**
      * @var float
      */
-    private $_maximumTemperature;
+    private $_maximumTemperature = 0.0;
 
     /**
      * @var float
      */
-    private $_averagePressure;
+    private $_averagePressure = 0.0;
     /**
      * @var float
      */
-    private $_minimumPressure;
+    private $_minimumPressure = 0.0;
     /**
      * @var float
      */
-    private $_maximumPressure;
+    private $_maximumPressure = 0.0;
 
     /**
      * @return float

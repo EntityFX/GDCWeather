@@ -50,7 +50,9 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
                                                 ->limit(1)
                                                 ->one();
 
-        $result->lastMeasure = $this->mapper->entityToContract($lastDataItem);
+        if ($lastDataItem != null) {
+            $result->lastMeasure = $this->mapper->entityToContract($lastDataItem);
+        }
 
         $retrieveQuery = WeatherPollingDataEntity::find();
 
@@ -198,7 +200,7 @@ SQL;
         //die('');
 
         $dbRes = $dbCommand->queryAll();
-
+        $result = [];
         /** @var WeatherPollingDataEntity $item */
         foreach ($dbRes as $item) {
             $resItem                  = new WeatherChartItem();
@@ -209,8 +211,10 @@ SQL;
             $resItem->maximumTemperature = $item['MaximumTemperature'];
             $resItem->minimumTemperature = $item['MinimumTemperature'];
             $resItem->averagePressure = $item['AveragePressure'];
-            yield $resItem;
+            $result[] = $resItem;
         }
+
+        return $result;
     }
 
     protected function initMapper() {

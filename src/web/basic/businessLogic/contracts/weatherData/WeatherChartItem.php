@@ -22,7 +22,7 @@ class WeatherChartItem extends Object {
     /**
      * @var int
      */
-    private $_key;
+    private $_key = 0;
 
     /**
      * @var \DateTime
@@ -36,20 +36,20 @@ class WeatherChartItem extends Object {
     /**
      * @var float
      */
-    private $_averageTemperature;
+    private $_averageTemperature = 0.0;
 
     /**
      * @var float
      */
-    private $_maximumTemperature;
+    private $_maximumTemperature = 0.0;
     /**
      * @var float
      */
-    private $_minimumTemperature;
+    private $_minimumTemperature = 0.0;
     /**
      * @var float
      */
-    private $_averagePressure;
+    private $_averagePressure = 0.0;
 
     /**
      * @return float
