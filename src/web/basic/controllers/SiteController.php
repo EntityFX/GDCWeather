@@ -93,7 +93,7 @@ class SiteController extends Controller {
 
         if (!empty($result->dataItems)) {
             $weatherDataProvider->setModels(
-                iterator_to_array(self::prepareStaticWeatherDataModel($result->dataItems))
+                self::prepareStaticWeatherDataModel($result->dataItems)
             );
         }
 
@@ -126,9 +126,10 @@ class SiteController extends Controller {
 
     /**
      * @param array $weatherDataItems
-     * @return \Generator
+     * @return WeatherDataItemModel[]
      */
     private static function prepareStaticWeatherDataModel(array $weatherDataItems) {
+        $result       = [];
         /** @var WeatherDataItem $item */
         foreach ($weatherDataItems as $item) {
             $modelItem           = new WeatherDataItemModel();
@@ -137,7 +138,9 @@ class SiteController extends Controller {
             $modelItem->pressure = $item->mmHg;
             $modelItem->alt      = $item->altitude;
             $modelItem->dateTime = $item->createDateTime;
-            yield $modelItem;
+            $result[] = $modelItem;
         }
+
+        return $result;
     }
 }

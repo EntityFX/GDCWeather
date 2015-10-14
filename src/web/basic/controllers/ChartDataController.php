@@ -54,7 +54,7 @@ class ChartDataController extends \yii\rest\Controller {
             $retrieveChartDataFilter->backInterval = new WeatherDataBackIntervalEnum((int)$model->period);
             $items = $this->_weatherManager->retrieveChartData($retrieveChartDataFilter);
 
-            return iterator_to_array(self::chartDataToModel($items));
+            return self::chartDataToModel($items);
         }
 
         return [];
@@ -65,7 +65,8 @@ class ChartDataController extends \yii\rest\Controller {
      * @return \Generator
      */
     private static function chartDataToModel(array &$data) {
-        /** @var WeatherChartItem $item */
+        $result       = [];
+        /** @var ChartDataItemModel[] $item */
         foreach ($data as $item) {
             $res                     = new ChartDataItemModel();
             $res->id                 = $item->key;
@@ -75,7 +76,9 @@ class ChartDataController extends \yii\rest\Controller {
             $res->averagePressure    = $item->averagePressure;
             $res->averageMmHg        = $item->averageMmHg;
             $res->dateTime           = Yii::$app->formatter->asDatetime($item->startDateTime, "short");
-            yield $res;
+            $result[] = $res;
         }
+
+        return $result;
     }
 }
