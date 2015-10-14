@@ -146,7 +146,15 @@ class FakeWeatherDataManager extends ManagerBase implements WeatherDataManagerIn
     }
 
     function getIntervalsList() {
-        return [];
+        return [
+            WeatherDataBackIntervalEnum::LAST_HOUR        => 'Last hour',
+            WeatherDataBackIntervalEnum::LAST_THREE_HOURS => 'Last 3 hours',
+            WeatherDataBackIntervalEnum::LAST_SIX_HOURS   => 'Last 6 hours',
+            WeatherDataBackIntervalEnum::LAST_HALF_DAY    => 'Last 12 hours',
+            WeatherDataBackIntervalEnum::LAST_DAY         => 'Last day',
+            WeatherDataBackIntervalEnum::LAST_WEEK        => 'Last week',
+            WeatherDataBackIntervalEnum::LAST_YEAR        => 'Last year',
+        ];
     }
 
     private static function buildSampleWeatherDataItem(array $data) {

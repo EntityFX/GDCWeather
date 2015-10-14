@@ -1,5 +1,5 @@
 Options +FollowSymLinks
-IndexIgnore */*
+#IndexIgnore */*
 RewriteEngine on
 
 # if request dosn't start with web add it
