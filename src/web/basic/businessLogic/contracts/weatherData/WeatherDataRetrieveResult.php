@@ -10,7 +10,7 @@
 namespace app\businessLogic\contracts\weatherData;
 
 
-use yii\base\Object;
+use app\businessLogic\contracts\RetrieveResult;
 
 /**
  * Class WeatherDataRetrieveResult
@@ -21,11 +21,7 @@ use yii\base\Object;
  * @property WeatherDataStatistics $statistics
  * @property int                   $totalItems
  */
-class WeatherDataRetrieveResult extends Object {
-    /**
-     * @var WeatherDataItem[]
-     */
-    private $_dataItems;
+class WeatherDataRetrieveResult extends RetrieveResult {
 
     /**
      * @var WeatherDataStatistics
@@ -35,10 +31,6 @@ class WeatherDataRetrieveResult extends Object {
      * @var WeatherDataItem
      */
     private $_lastMeasure;
-    /**
-     * @var int
-     */
-    private $_totalItems = 0;
 
     /**
      * @return WeatherDataItem[]
@@ -52,34 +44,6 @@ class WeatherDataRetrieveResult extends Object {
      */
     public function setLastMeasure(WeatherDataItem $lastMeasure) {
         $this->_lastMeasure = $lastMeasure;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalItems() {
-        return $this->_totalItems;
-    }
-
-    /**
-     * @param int $totalItems
-     */
-    public function setTotalItems($totalItems) {
-        $this->_totalItems = (int)$totalItems;
-    }
-
-    /**
-     * @return \app\businessLogic\contracts\weatherData\WeatherDataItem[]
-     */
-    public function getDataItems() {
-        return $this->_dataItems;
-    }
-
-    /**
-     * @param \app\businessLogic\contracts\weatherData\WeatherDataItem[] $dataItems
-     */
-    public function setDataItems(array $dataItems) {
-        $this->_dataItems = $dataItems;
     }
 
     /**

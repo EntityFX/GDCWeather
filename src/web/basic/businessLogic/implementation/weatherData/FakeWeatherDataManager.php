@@ -10,6 +10,7 @@ namespace app\businessLogic\implementation\weatherData;
 
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
+use app\businessLogic\contracts\weatherData\ordering\SensorVendorOrder;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\contracts\weatherData\WeatherChartItem;
 use app\businessLogic\contracts\weatherData\WeatherDataItem;
@@ -113,9 +114,8 @@ class FakeWeatherDataManager extends ManagerBase implements WeatherDataManagerIn
      * @param WeatherDataRetrieveFilter $filter
      *
      * @param \app\utils\Limit          $limit
-     * @param WeatherDataRetTrieveOrder $order
-     *
-     * @return WeatherDataRetrieveResult$result
+     * @param WeatherDataRetrieveOrder  $order
+     * @return WeatherDataRetrieveResult $result
      */
     function retrieve(WeatherDataRetrieveFilter $filter, Limit $limit, WeatherDataRetrieveOrder $order) {
 

@@ -2,16 +2,23 @@
 
 namespace app\controllers;
 
+use app\businessLogic\contracts\sensor\enums\SensorTypeEnum;
+use app\businessLogic\contracts\sensor\Sensor;
+use app\businessLogic\contracts\sensor\SensorVendor;
 use app\businessLogic\contracts\weatherData\enums\WeatherChartPointsCountEnum;
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
+use app\businessLogic\contracts\sensor\ordering\SensorVendorOrder;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\contracts\weatherData\WeatherDataItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
+use app\businessLogic\implementation\sensor\SensorManager;
+use app\businessLogic\implementation\sensor\SensorVendorManager;
 use app\models\FilterFormModel;
 use app\models\WeatherDataItemModel;
 use app\utils\dataProvider\SimpleListDataProvider;
 use app\utils\enum\OrderDirectionEnum;
+use app\utils\Guid;
 use app\utils\Limit;
 use Yii;
 use yii\web\Controller;
@@ -38,6 +45,24 @@ class SiteController extends Controller {
     public function __construct($id, $module, WeatherDataManagerInterface $weatherManager, $config = []) {
         parent::__construct($id, $module, $config);
         $this->_weatherManager = $weatherManager;
+
+        $sm = new SensorManager();
+
+        $sv         = new SensorVendorManager();
+        $vendorList = $sv->retrieve(new Limit(), new SensorVendorOrder());
+
+        $v       = new SensorVendor();
+        $v->name = md5(mt_rand(0, 10000));
+        $sv->create($v);
+
+        $s         = new Sensor();
+        $s->name   = "hfg";
+        $s->model  = "dfgfdg";
+        $s->type   = new SensorTypeEnum(SensorTypeEnum::TEMPERATURE);
+        $s->vendor = $v;
+        $sm->create($s);
+
+        //var_dump($result);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace app\businessLogic\implementation\weatherData;
 
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
+use app\businessLogic\contracts\weatherData\ordering\SensorVendorOrder;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\contracts\weatherData\WeatherChartItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
@@ -122,16 +123,16 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
 
     public function getOrderField(OrderBase $ord) {
         switch ($ord->getField()) {
-            case WeatherDataRetrieveOrder::ID:
+            case SensorVendorOrder::ID:
                 return 'id';
                 break;
-            case WeatherDataRetrieveOrder::TEMPERATURE:
+            case SensorVendorOrder::TEMPERATURE:
                 return 'temp';
                 break;
-            case WeatherDataRetrieveOrder::PRESSURE:
+            case SensorVendorOrder::PRESSURE:
                 return 'pressure';
                 break;
-            case WeatherDataRetrieveOrder::ALTITUDE:
+            case SensorVendorOrder::ALTITUDE:
                 return 'alt';
                 break;
         }
