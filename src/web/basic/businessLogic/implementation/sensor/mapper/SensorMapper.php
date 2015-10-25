@@ -42,6 +42,15 @@ class SensorMapper extends BusinessLogicMapperBase {
      * @return \yii\base\Object
      */
     public function entityToContract(ActiveRecord $entity) {
-        // TODO: Implement entityToContract() method.
+        /** @var $entity SensorEntity */
+        if (!($entity instanceof SensorEntity)) {
+            throw new ManagerException("Wrong type of mapping entity");
+        }
+        $sensor       = new SensorVendor();
+        $vendor->id   = Guid::parseBinaryString($entity->id);
+
+        $vendor->name = $entity->name;
+
+        return $vendor;
     }
 }

@@ -12,6 +12,7 @@ use app\businessLogic\contracts\sensor\ordering\SensorOrder;
 use app\businessLogic\contracts\sensor\Sensor;
 use app\businessLogic\contracts\sensor\SensorManagerInterface;
 use app\businessLogic\implementation\sensor\mapper\SensorMapper;
+use app\dataAccess\entities\SensorEntity;
 use app\utils\exceptions\ManagerException;
 use app\utils\Guid;
 use app\utils\Limit;
@@ -38,7 +39,9 @@ class SensorManager extends ManagerBase implements SensorManagerInterface {
     }
 
     function getById(Guid $id) {
-        // TODO: Implement getById() method.
+        $entity = SensorEntity::findOne(['id', $id->toBinaryString()]);
+
+        return $entity != null ? $this->mapper->entityToContract($entity) : null;
     }
 
     function update(Sensor $sensorVendor) {

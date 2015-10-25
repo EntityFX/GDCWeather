@@ -49,7 +49,7 @@ class SiteController extends Controller {
         $sm = new SensorManager();
 
         $sv         = new SensorVendorManager();
-        $vendorList = $sv->retrieve(new Limit(), new SensorVendorOrder());
+        //$vendorList = $sv->retrieve(new Limit(), new SensorVendorOrder());
 
         $v       = new SensorVendor();
         $v->name = md5(mt_rand(0, 10000));
