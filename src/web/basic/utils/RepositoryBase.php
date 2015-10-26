@@ -5,6 +5,8 @@ namespace app\utils;
 use app\utils\enum\EnumBase;
 use app\utils\enum\OrderDirectionEnum;
 use Yii;
+use yii\base\Component;
+use yii\db\Connection;
 use yii\db\Query;
 
 /**
@@ -13,19 +15,19 @@ use yii\db\Query;
  * @author EntityFX <artem.solopiy@gmail.com>
  * @package Kontinent\Components\Common
  */
-abstract class RepositoryBase extends ComponentBase {
+abstract class RepositoryBase extends Component {
     const REPOSITORY_CATEGORY    = 'app.components.repositories';
 
     /**
      *
-     * @var CDbConnection
+     * @var Connection
      */
     protected $db;
 
     public function __construct()
     {
+        parent::__construct();
         $this->db  = Yii::$app->db;
-        $this->ioc = Yii::$app->ioc->container;
     }
 
     /**
@@ -82,6 +84,6 @@ abstract class RepositoryBase extends ComponentBase {
      */
     protected function createGuid()
     {
-        return new Guid($this->db->createCommand('SELECT UUID()')->queryScalar());
+        return Guid::generate();
     }
 }

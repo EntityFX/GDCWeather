@@ -7,8 +7,11 @@
 
 namespace app\businessLogic\implementation\sensor\mapper;
 
+use app\businessLogic\contracts\sensor\enums\SensorTypeEnum;
 use app\businessLogic\contracts\sensor\Sensor;
+use app\dataAccess\entities\SensorVendorEntity;
 use app\utils\exceptions\ManagerException;
+use app\utils\Guid;
 use app\utils\mappers\BusinessLogicMapperBase;
 use yii\base\Object;
 use yii\db\ActiveRecord;
@@ -46,11 +49,18 @@ class SensorMapper extends BusinessLogicMapperBase {
         if (!($entity instanceof SensorEntity)) {
             throw new ManagerException("Wrong type of mapping entity");
         }
-        $sensor       = new SensorVendor();
-        $vendor->id   = Guid::parseBinaryString($entity->id);
+        $sensor     = new Sensor();
+        $sensor->id = Guid::parseBinaryString($entity->id);
 
-        $vendor->name = $entity->name;
+        $sensor->name  = $entity->name;
+        $sensor->model = $entity->model;
+        $sensor->type  = new SensorTypeEnum((int)$entity->type);
 
-        return $vendor;
+        if ($entity->vendor != null && $entity->vendor instanceof SensorVendorEntity) {
+            $vendorMapper   = new SensorVendorMapper();
+            $sensor->vendor = $vendorMapper->entityToContract($entity->vendor);
+        }
+
+        return $sensor;
     }
 }

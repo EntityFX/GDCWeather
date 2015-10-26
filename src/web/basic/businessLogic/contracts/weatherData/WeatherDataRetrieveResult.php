@@ -9,8 +9,7 @@
 
 namespace app\businessLogic\contracts\weatherData;
 
-
-use app\businessLogic\contracts\RetrieveResult;
+use app\utils\RetrieveResult;
 
 /**
  * Class WeatherDataRetrieveResult

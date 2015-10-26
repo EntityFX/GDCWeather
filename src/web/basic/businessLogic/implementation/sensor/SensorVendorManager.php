@@ -76,7 +76,8 @@ class SensorVendorManager extends ManagerBase implements SensorVendorManagerInte
 
     function update(SensorVendor $sensorVendor) {
         $vendorEntity = $this->mapper->contractToEntity($sensorVendor);
-        $vendorEntity->$vendorEntity->update();
+        $vendorEntity->setOldAttribute('id', $sensorVendor->id->toBinaryString());
+        $vendorEntity->update();
     }
 
     function delete(Guid $id) {
@@ -96,5 +97,7 @@ class SensorVendorManager extends ManagerBase implements SensorVendorManagerInte
                 return 'temp';
                 break;
         }
+
+        return 'id';
     }
 }

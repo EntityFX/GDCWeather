@@ -10,11 +10,11 @@ namespace app\utils\enum;
  */
 final class OrderDirectionEnum extends EnumBase {
 
-    const ASC = "ASC";
-    const DESC = "DESC";
+    const ASC  = 1;
+    const DESC = 0;
 
     public function __construct($value = self::ASC) {
-        $this->__value = $value;
+        $this->setValue($value);
     }
 
 }

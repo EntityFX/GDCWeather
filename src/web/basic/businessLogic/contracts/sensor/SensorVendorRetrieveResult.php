@@ -8,7 +8,7 @@
 namespace app\businessLogic\contracts\sensor;
 
 
-use app\businessLogic\contracts\RetrieveResult;
+use app\utils\RetrieveResult;
 
 class SensorVendorRetrieveResult extends RetrieveResult {
 

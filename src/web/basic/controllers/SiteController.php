@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\businessLogic\contracts\sensor\enums\SensorTypeEnum;
+use app\businessLogic\contracts\sensor\ordering\SensorOrder;
 use app\businessLogic\contracts\sensor\Sensor;
 use app\businessLogic\contracts\sensor\SensorVendor;
 use app\businessLogic\contracts\weatherData\enums\WeatherChartPointsCountEnum;
@@ -20,6 +21,13 @@ use app\utils\dataProvider\SimpleListDataProvider;
 use app\utils\enum\OrderDirectionEnum;
 use app\utils\Guid;
 use app\utils\Limit;
+use app\utils\webService\implementation\clientProxies\mapper\ClientProxyEndpointMapper;
+use app\utils\webService\implementation\clientProxies\mapper\ClientProxyMapper;
+use app\utils\webService\implementation\clientProxies\repositories\WebClientProxyRepository;
+use app\utils\workers\implementation\mapper\WorkerMapper;
+use app\utils\workers\implementation\repositories\WorkerRepository;
+use app\utils\workers\implementation\WorkerManager;
+use app\utils\workers\WorkerFactory;
 use Yii;
 use yii\web\Controller;
 
@@ -46,23 +54,9 @@ class SiteController extends Controller {
         parent::__construct($id, $module, $config);
         $this->_weatherManager = $weatherManager;
 
-        $sm = new SensorManager();
-
-        $sv         = new SensorVendorManager();
-        //$vendorList = $sv->retrieve(new Limit(), new SensorVendorOrder());
-
-        $v       = new SensorVendor();
-        $v->name = md5(mt_rand(0, 10000));
-        $sv->create($v);
-
-        $s         = new Sensor();
-        $s->name   = "hfg";
-        $s->model  = "dfgfdg";
-        $s->type   = new SensorTypeEnum(SensorTypeEnum::TEMPERATURE);
-        $s->vendor = $v;
-        $sm->create($s);
-
-        //var_dump($result);
+        //$clientProxyRepository = new WebClientProxyRepository(new ClientProxyMapper(), new ClientProxyEndpointMapper());
+        $wm = new WorkerManager(new WorkerRepository(new WorkerMapper()));
+        WorkerFactory::createWorkerAndRun(1);
     }
 
     /**

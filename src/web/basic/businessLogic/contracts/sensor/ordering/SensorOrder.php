@@ -16,13 +16,15 @@ class SensorOrder extends OrderBase {
      * @return array
      */
     protected function getOrderFields() {
-        // TODO: Implement getOrderFields() method.
+        return [
+            self::ID => self::ID,
+        ];
     }
 
     /**
      * @return string
      */
     protected function defaultAttribute() {
-        // TODO: Implement defaultAttribute() method.
+        return self::ID;
     }
 }

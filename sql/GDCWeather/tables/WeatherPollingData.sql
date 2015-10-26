@@ -1,10 +1,15 @@
-CREATE TABLE `Sensors.WeatherPollingData` (
+CREATE TABLE WeatherPollingData (
     id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     temp decimal(3, 1) NOT NULL,
     pressure int(11) NOT NULL,
     alt double NOT NULL,
     dateTime datetime NOT NULL,
-    PRIMARY KEY (id)
+    sensorId BINARY(16) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT FK_WeatherPollingData_Sensor_id FOREIGN KEY (sensorId)
+    REFERENCES Sensor (id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT
 )
     ENGINE = INNODB
     AUTO_INCREMENT = 1

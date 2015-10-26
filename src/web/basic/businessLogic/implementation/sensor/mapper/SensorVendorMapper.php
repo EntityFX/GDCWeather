@@ -34,7 +34,6 @@ class SensorVendorMapper extends BusinessLogicMapperBase {
     /**
      * @param \yii\db\ActiveRecord $entity
      * @return \yii\base\Object
-     * @internal param $contract
      *
      */
     public function entityToContract(\yii\db\ActiveRecord $entity) {

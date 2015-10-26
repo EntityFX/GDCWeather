@@ -1,6 +1,8 @@
 <?php
 
 namespace app\utils;
+
+use app\utils\enum\OrderDirectionEnum;
 use app\utils\exceptions\ManagerException;
 use app\utils\mappers\BusinessLogicMapperBase;
 use app\utils\order\OrderBase;
@@ -44,6 +46,8 @@ abstract class ManagerBase extends ComponentBase
     protected function getOrderExpression(OrderBase $order, callable $func) {
         $fieldName = $func($order);
         if (empty($fieldName)) return '';
-        return $fieldName . ' '. $order->getDirection()->getValue();
+        $direction = $order->getDirection()->getValue() === OrderDirectionEnum::ASC ? 'ASC' : 'DESC';
+
+        return $fieldName . ' ' . $direction;
     }
 }
