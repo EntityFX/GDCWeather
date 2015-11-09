@@ -17,17 +17,17 @@ use app\businessLogic\implementation\sensor\SensorManager;
 use app\businessLogic\implementation\sensor\SensorVendorManager;
 use app\models\FilterFormModel;
 use app\models\WeatherDataItemModel;
-use app\utils\dataProvider\SimpleListDataProvider;
-use app\utils\enum\OrderDirectionEnum;
-use app\utils\Guid;
-use app\utils\Limit;
-use app\utils\webService\implementation\clientProxies\mapper\ClientProxyEndpointMapper;
-use app\utils\webService\implementation\clientProxies\mapper\ClientProxyMapper;
-use app\utils\webService\implementation\clientProxies\repositories\WebClientProxyRepository;
-use app\utils\workers\implementation\mapper\WorkerMapper;
-use app\utils\workers\implementation\repositories\WorkerRepository;
-use app\utils\workers\implementation\WorkerManager;
-use app\utils\workers\WorkerFactory;
+use entityfx\utils\dataProvider\SimpleListDataProvider;
+use entityfx\utils\enum\OrderDirectionEnum;
+use entityfx\utils\Guid;
+use entityfx\utils\Limit;
+use entityfx\utils\webService\implementation\clientProxies\mapper\ClientProxyEndpointMapper;
+use entityfx\utils\webService\implementation\clientProxies\mapper\ClientProxyMapper;
+use entityfx\utils\webService\implementation\clientProxies\repositories\WebClientProxyRepository;
+use entityfx\utils\workers\implementation\mapper\WorkerMapper;
+use entityfx\utils\workers\implementation\repositories\WorkerRepository;
+use entityfx\utils\workers\implementation\WorkerManager;
+use entityfx\utils\workers\WorkerFactory;
 use Yii;
 use yii\web\Controller;
 
@@ -46,7 +46,7 @@ class SiteController extends Controller {
 
     /**
      * @param string                      $id
-     * @param \yii\base\Module            $module
+     * @param \entityfx\base\Module            $module
      * @param WeatherDataManagerInterface $weatherManager
      * @param array                       $config
      */

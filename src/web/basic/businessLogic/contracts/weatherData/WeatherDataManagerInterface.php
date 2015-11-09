@@ -12,13 +12,13 @@ use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilterBase;
 use app\businessLogic\contracts\weatherData\ordering\SensorVendorOrder;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
-use app\utils\Limit;
+use entityfx\utils\Limit;
 
 interface WeatherDataManagerInterface {
     /**
      * @param WeatherDataRetrieveFilter $filter
      *
-     * @param \app\utils\Limit         $limit
+     * @param \entityfx\utils\Limit         $limit
      * @param WeatherDataRetrieveOrder $order
      *
      * @return WeatherDataRetrieveResult

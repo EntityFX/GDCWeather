@@ -9,7 +9,7 @@
 
 namespace app\businessLogic\contracts\weatherData;
 
-use app\utils\RetrieveResult;
+use entityfx\utils\RetrieveResult;
 
 /**
  * Class WeatherDataRetrieveResult

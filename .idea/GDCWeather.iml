@@ -45,15 +45,6 @@
       <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/phpspec/php-diff" />
       <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/swiftmailer/swiftmailer" />
       <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/twig/twig" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-bootstrap" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-codeception" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-composer" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-debug" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-faker" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-gii" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-swiftmailer" />
-      <excludeFolder url="file://$MODULE_DIR$/src/web/basic/vendor/yiisoft/yii2-twig" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

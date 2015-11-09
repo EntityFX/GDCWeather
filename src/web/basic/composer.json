@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-twig": "^2.0",
         "kartik-v/yii2-widgets": "*",
-        "bower-asset/chartjs": "1.0.2"
+        "bower-asset/chartjs": "1.0.2",
+        "entityfx/yii2-utils": "1.0.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

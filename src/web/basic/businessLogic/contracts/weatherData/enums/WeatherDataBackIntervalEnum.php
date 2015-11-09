@@ -4,7 +4,7 @@
 namespace app\businessLogic\contracts\weatherData\enums;
 
 
-use app\utils\enum\EnumBase;
+use entityfx\utils\enum\EnumBase;
 
 /**
  * Class WeatherDataBackIntervalEnum

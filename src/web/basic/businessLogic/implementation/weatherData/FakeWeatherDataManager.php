@@ -18,9 +18,9 @@ use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
 use app\businessLogic\contracts\weatherData\WeatherDataRetrieveResult;
 use app\businessLogic\contracts\weatherData\WeatherDataStatistics;
 use app\dataAccess\entities\SensorVendorEntity;
-use app\utils\Guid;
-use app\utils\Limit;
-use app\utils\ManagerBase;
+use entityfx\utils\Guid;
+use entityfx\utils\Limit;
+use entityfx\utils\ManagerBase;
 
 class FakeWeatherDataManager extends ManagerBase implements WeatherDataManagerInterface {
 

@@ -10,7 +10,7 @@
 namespace app\businessLogic\contracts\weatherData\ordering;
 
 
-use app\utils\order\OrderBase;
+use entityfx\utils\order\OrderBase;
 
 class WeatherDataRetrieveOrder extends OrderBase {
 

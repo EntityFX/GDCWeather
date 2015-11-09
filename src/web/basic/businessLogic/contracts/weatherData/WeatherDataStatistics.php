@@ -10,7 +10,7 @@
 namespace app\businessLogic\contracts\weatherData;
 
 
-use yii\base\Object;
+use yii\Object;
 
 /**
  * Class WeatherDataStatistics
