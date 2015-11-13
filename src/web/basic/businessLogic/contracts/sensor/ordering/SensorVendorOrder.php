@@ -10,7 +10,7 @@
 namespace app\businessLogic\contracts\sensor\ordering;
 
 
-use app\utils\order\OrderBase;
+use entityfx\utils\order\OrderBase;
 
 class SensorVendorOrder extends OrderBase {
 

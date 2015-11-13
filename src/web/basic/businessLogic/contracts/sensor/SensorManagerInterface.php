@@ -2,8 +2,8 @@
 namespace app\businessLogic\contracts\sensor;
 
 use app\businessLogic\contracts\sensor\ordering\SensorOrder;
-use app\utils\Guid;
-use app\utils\Limit;
+use entityfx\utils\Guid;
+use entityfx\utils\Limit;
 
 /**
  * @link      http://entityfx.ru

@@ -4,7 +4,6 @@ namespace app\businessLogic\implementation\weatherData;
 
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
-use app\businessLogic\contracts\weatherData\ordering\SensorVendorOrder;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\contracts\weatherData\WeatherChartItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
@@ -12,10 +11,10 @@ use app\businessLogic\contracts\weatherData\WeatherDataRetrieveResult;
 use app\businessLogic\contracts\weatherData\WeatherDataStatistics;
 use app\businessLogic\implementation\weatherData\mapper\WeatherDataMapper;
 use app\dataAccess\entities\WeatherPollingDataEntity;
-use app\utils\Limit;
-use app\utils\ManagerBase;
-use app\utils\order\OrderBase;
+use entityfx\utils\order\OrderBase;
 use DateTime;
+use entityfx\utils\Limit;
+use entityfx\utils\ManagerBase;
 use Yii;
 use yii\db\Query;
 
@@ -38,7 +37,7 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
     /**
      * @param WeatherDataRetrieveFilter $filter
      *
-     * @param \app\utils\Limit         $limit
+     * @param \entityfx\utils\Limit         $limit
      * @param WeatherDataRetrieveOrder $order
      *
      * @return WeatherDataRetrieveResult
@@ -123,16 +122,16 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
 
     public function getOrderField(OrderBase $ord) {
         switch ($ord->getField()) {
-            case SensorVendorOrder::ID:
+            case WeatherDataRetrieveOrder::ID:
                 return 'id';
                 break;
-            case SensorVendorOrder::TEMPERATURE:
+            case WeatherDataRetrieveOrder::TEMPERATURE:
                 return 'temp';
                 break;
-            case SensorVendorOrder::PRESSURE:
+            case WeatherDataRetrieveOrder::PRESSURE:
                 return 'pressure';
                 break;
-            case SensorVendorOrder::ALTITUDE:
+            case WeatherDataRetrieveOrder::ALTITUDE:
                 return 'alt';
                 break;
         }

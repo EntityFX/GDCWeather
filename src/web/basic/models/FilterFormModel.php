@@ -31,9 +31,9 @@ class FilterFormModel extends Model {
 
     public function rules() {
         return [
-            // name, email, subject и body атрибуты обязательны
+            // name, email, subject пїЅ body пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             [['startDateTime', 'backPeriod', 'pointsCount'], 'required'],
-            [['startDateTime'], 'app\utils\validators\DateTimeValidator', 'format' => 'short'],
+            [['startDateTime'], 'entityfx\utils\validators\DateTimeValidator', 'format' => 'short'],
         ];
     }
 

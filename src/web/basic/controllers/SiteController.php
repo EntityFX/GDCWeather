@@ -21,6 +21,10 @@ use entityfx\utils\dataProvider\SimpleListDataProvider;
 use entityfx\utils\enum\OrderDirectionEnum;
 use entityfx\utils\Guid;
 use entityfx\utils\Limit;
+use entityfx\utils\objectHistory\contracts\enums\HistoryTypeEnum;
+use entityfx\utils\objectHistory\contracts\ObjectHistory;
+use entityfx\utils\objectHistory\implementation\mapper\ObjectHistoryMapper;
+use entityfx\utils\objectHistory\implementation\repositories\ObjectHistoryRepository;
 use entityfx\utils\webService\implementation\clientProxies\mapper\ClientProxyEndpointMapper;
 use entityfx\utils\webService\implementation\clientProxies\mapper\ClientProxyMapper;
 use entityfx\utils\webService\implementation\clientProxies\repositories\WebClientProxyRepository;
@@ -45,18 +49,27 @@ class SiteController extends Controller {
 
 
     /**
-     * @param string                      $id
-     * @param \entityfx\base\Module            $module
+     * @param string $id
+     * @param \yii\base\Module $module
      * @param WeatherDataManagerInterface $weatherManager
-     * @param array                       $config
+     * @param array $config
      */
     public function __construct($id, $module, WeatherDataManagerInterface $weatherManager, $config = []) {
         parent::__construct($id, $module, $config);
         $this->_weatherManager = $weatherManager;
 
         //$clientProxyRepository = new WebClientProxyRepository(new ClientProxyMapper(), new ClientProxyEndpointMapper());
-        $wm = new WorkerManager(new WorkerRepository(new WorkerMapper()));
-        WorkerFactory::createWorkerAndRun(1);
+        //$wm = new WorkerManager(new WorkerRepository(new WorkerMapper()));
+        //WorkerFactory::createWorkerAndRun(1);
+
+        $objectHistoryRepository = new ObjectHistoryRepository(new ObjectHistoryMapper());
+        $dm = new ObjectHistory();
+        $dm->guid = Guid::generate();
+        $dm->type = new HistoryTypeEnum(HistoryTypeEnum::CREATE);
+        $dm->category = 0;
+        $dm->priority = 1;
+        $objectHistoryRepository->store($dm);
+        $objectHistoryRepository->read(new \DateTime('today'), new \DateTime('now'));
     }
 
     /**

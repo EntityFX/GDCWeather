@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\businessLogic\contracts\weatherData;
-
 
 use yii\base\Object;
 
@@ -18,7 +16,8 @@ use yii\base\Object;
  * @property \DateTime $startDateTime
  * @property \DateTime $endDateTime
  */
-class WeatherChartItem extends Object {
+class WeatherChartItem extends Object
+{
     /**
      * @var int
      */
@@ -54,105 +53,120 @@ class WeatherChartItem extends Object {
     /**
      * @return float
      */
-    public function getMaximumTemperature() {
+    public function getMaximumTemperature()
+    {
         return $this->_maximumTemperature;
     }
 
     /**
      * @param float $maximumTemperature
      */
-    public function setMaximumTemperature($maximumTemperature) {
+    public function setMaximumTemperature($maximumTemperature)
+    {
         $this->_maximumTemperature = $maximumTemperature;
     }
 
     /**
      * @return float
      */
-    public function getMinimumTemperature() {
+    public function getMinimumTemperature()
+    {
         return $this->_minimumTemperature;
     }
 
     /**
      * @param float $minimumTemperature
      */
-    public function setMinimumTemperature($minimumTemperature) {
+    public function setMinimumTemperature($minimumTemperature)
+    {
         $this->_minimumTemperature = $minimumTemperature;
     }
 
     /**
      * @return float
      */
-    public function getAveragePressure() {
+    public function getAveragePressure()
+    {
         return $this->_averagePressure;
     }
 
     /**
      * @param float $pressure
      */
-    public function setAveragePressure($pressure) {
+    public function setAveragePressure($pressure)
+    {
         $this->_averagePressure = (float)$pressure;
     }
 
     /**
      * @return \DateTime
      */
-    public function getEndDateTime() {
+    public function getEndDateTime()
+    {
         return $this->_endDateTime;
     }
 
     /**
      * @param \DateTime $endDateTime
      */
-    public function setEndDateTime($endDateTime) {
+    public function setEndDateTime($endDateTime)
+    {
         $this->_endDateTime = $endDateTime;
     }
 
     /**
      * @return \DateTime
      */
-    public function getStartDateTime() {
+    public function getStartDateTime()
+    {
         return $this->_startDateTime;
     }
 
     /**
      * @param \DateTime $datetime
      */
-    public function setStartDateTime(\DateTime $datetime) {
+    public function setStartDateTime(\DateTime $datetime)
+    {
         $this->_startDateTime = $datetime;
     }
 
     /**
      * @return int
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->_key;
     }
 
     /**
      * @param int $key
      */
-    public function setKey($key) {
+    public function setKey($key)
+    {
         $this->_key = (int)$key;
     }
 
     /**
      * @return string
      */
-    public function getAverageTemperature() {
+    public function getAverageTemperature()
+    {
         return $this->_averageTemperature;
     }
 
     /**
      * @param string $value
      */
-    public function setAverageTemperature($value) {
+    public function setAverageTemperature($value)
+    {
         $this->_averageTemperature = (float)$value;
     }
 
     /**
      * @return float
      */
-    public function getAverageMmHg() {
+    public function getAverageMmHg()
+    {
         return static::calculateMmHg($this->_averagePressure);
     }
 
@@ -160,7 +174,8 @@ class WeatherChartItem extends Object {
      * @param $pressure
      * @return float
      */
-    public static function calculateMmHg($pressure) {
+    public static function calculateMmHg($pressure)
+    {
         return $pressure / 1000 * 7.5006;
     }
 }
