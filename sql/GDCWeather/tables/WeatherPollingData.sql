@@ -1,5 +1,5 @@
 CREATE TABLE WeatherPollingData (
-    id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    id binary(16) NOT NULL,
     temp decimal(3, 1) NOT NULL,
     pressure int(11) NOT NULL,
     alt double NOT NULL,

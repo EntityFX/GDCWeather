@@ -9,7 +9,7 @@ namespace app\businessLogic\contracts\sensor;
 
 
 use app\businessLogic\contracts\sensor\enums\SensorTypeEnum;
-use app\utils\Guid;
+use entityfx\utils\Guid;
 use yii\base\Object;
 
 class Sensor extends Object {

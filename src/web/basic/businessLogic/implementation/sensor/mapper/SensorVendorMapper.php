@@ -3,9 +3,9 @@ namespace app\businessLogic\implementation\sensor\mapper;
 
 use app\businessLogic\contracts\sensor\SensorVendor;
 use app\dataAccess\entities\SensorVendorEntity;
-use app\utils\exceptions\ManagerException;
-use app\utils\Guid;
-use app\utils\mappers\BusinessLogicMapperBase;
+use entityfx\utils\exceptions\ManagerException;
+use entityfx\utils\Guid;
+use entityfx\utils\mappers\BusinessLogicMapperBase;
 
 /**
  * @link      http://entityfx.ru

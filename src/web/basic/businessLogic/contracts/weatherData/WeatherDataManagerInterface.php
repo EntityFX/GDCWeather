@@ -9,12 +9,13 @@
 namespace app\businessLogic\contracts\weatherData;
 
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
-use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilterBase;
-use app\businessLogic\contracts\weatherData\ordering\SensorVendorOrder;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use entityfx\utils\Limit;
 
 interface WeatherDataManagerInterface {
+
+    function create(WeatherDataItem $weatherData);
+
     /**
      * @param WeatherDataRetrieveFilter $filter
      *

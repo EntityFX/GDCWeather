@@ -75,9 +75,11 @@ class WeatherDataRetrieveFilter extends Object {
     }
 
     function __construct(WeatherDataBackIntervalEnum $backInterval = null) {
-        if ($backInterval === null) {
-            $this->_backInterval = new WeatherDataBackIntervalEnum(WeatherDataBackIntervalEnum::LAST_HOUR);
-        }
+        $this->_backInterval = $backInterval === null
+            ? $this->_backInterval = new WeatherDataBackIntervalEnum(WeatherDataBackIntervalEnum::LAST_HOUR)
+            : $backInterval;
+
+
         $this->_startDateTime = new \DateTime();
     }
 }

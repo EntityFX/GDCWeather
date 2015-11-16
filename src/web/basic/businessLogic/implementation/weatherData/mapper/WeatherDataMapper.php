@@ -12,8 +12,9 @@ namespace app\businessLogic\implementation\weatherData\mapper;
 
 use app\businessLogic\contracts\weatherData\WeatherDataItem;
 use app\dataAccess\entities\WeatherPollingDataEntity;
-use app\utils\exceptions\ManagerException;
-use app\utils\mappers\BusinessLogicMapperBase;
+use entityfx\utils\exceptions\ManagerException;
+use entityfx\utils\Guid;
+use entityfx\utils\mappers\BusinessLogicMapperBase;
 use DateTime;
 use yii\base\Object;
 use yii\db\ActiveRecord;
@@ -23,7 +24,7 @@ class WeatherDataMapper extends BusinessLogicMapperBase {
     /**
      * @param \app\businessLogic\contracts\weatherData\WeatherDataItem|\yii\base\Object $contract
      *
-     * @throws \app\utils\exceptions\ManagerException
+     * @throws \entityfx\utils\exceptions\ManagerException
      * @return WeatherPollingDataEntity
      */
     public function contractToEntity(Object $contract) {
@@ -32,19 +33,19 @@ class WeatherDataMapper extends BusinessLogicMapperBase {
             throw new ManagerException("Wrong type of mapping contract");
         }
         $entity       = new WeatherPollingDataEntity();
-        $entity->id   = $contract->id;
+        $entity->id   = $contract->id->toBinaryString();
         $entity->temp = $contract->temperature;
         $entity->pressure = $contract->pressure;
         $entity->alt  = $contract->altitude;
         $entity->dateTime = $contract->createDateTime->format(DateTime::ISO8601);
-
+        $entity->sensorId = $contract->sensor->id->toBinaryString();
         return $entity;
     }
 
     /**
      * @param \app\dataAccess\entities\WeatherPollingDataEntity $entity
      *
-     * @throws \app\utils\exceptions\ManagerException
+     * @throws \entityfx\utils\exceptions\ManagerException
      *
      * @return WeatherDataItem
      */
@@ -54,7 +55,7 @@ class WeatherDataMapper extends BusinessLogicMapperBase {
             throw new ManagerException("Wrong type of mapping entity");
         }
         $contract              = new WeatherDataItem();
-        $contract->id          = $entity->id;
+        $contract->id          = Guid::parseBinaryString($entity->id);
         $contract->temperature = $entity->temp;
         $contract->pressure    = $entity->pressure;
         $contract->altitude    = $entity->alt;

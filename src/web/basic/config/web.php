@@ -14,6 +14,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'dNyPIGSQ7_OeYTzfWLxVD_swJYunRqbb',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -69,6 +72,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
+            'rules' => [
+                "<controller>/<id:[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}>" => "<controller>/view"
+            ]
         ],
         'assetManager' => [
             'appendTimestamp' => true,
@@ -85,6 +91,9 @@ $config = [
                     ],
                 ],
             ],
+        ],
+        'objectHistory' => [
+            'class' => 'entityfx\utils\objectHistory\ObjectHistory'
         ]
     ],
     'params' => $params,

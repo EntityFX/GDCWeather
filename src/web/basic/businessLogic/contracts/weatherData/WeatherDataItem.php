@@ -2,7 +2,9 @@
 
 namespace app\businessLogic\contracts\weatherData;
 
+use app\businessLogic\contracts\sensor\Sensor;
 use DateTime;
+use entityfx\utils\Guid;
 use yii\base\Object;
 
 /**
@@ -10,7 +12,7 @@ use yii\base\Object;
  *
  * @package app\bussinesLogic\contracts\weatherData
  *
- * @property int   $id
+ * @property Guid   $id
  * @property float $temperature
  * @property float $altitude
  * @property float $pressure
@@ -44,6 +46,32 @@ class WeatherDataItem extends Object {
     private $_createDateTime;
 
     /**
+     * @var Sensor
+     */
+    private $_sensor;
+
+    /**
+     * @return Sensor
+     */
+    public function getSensor()
+    {
+        return $this->_sensor;
+    }
+
+    /**
+     * @param Sensor $sensor
+     */
+    public function setSensor(Sensor $sensor)
+    {
+        $this->_sensor = $sensor;
+    }
+
+    public function __construct() {
+        parent::__construct();
+        $this->_id = Guid::generate();
+    }
+
+    /**
      * @return float
      */
     public function getAltitude() {
@@ -75,13 +103,13 @@ class WeatherDataItem extends Object {
      * @return int
      */
     public function getId() {
-        return (int)$this->_id;
+        return $this->_id;
     }
 
     /**
-     * @param int $id
+     * @param Guid $id
      */
-    public function setId($id) {
+    public function setId(Guid $id) {
         $this->_id = $id;
     }
 

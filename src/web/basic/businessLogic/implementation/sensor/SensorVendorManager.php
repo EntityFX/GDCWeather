@@ -1,17 +1,22 @@
 <?php
 namespace app\businessLogic\implementation\sensor;
 
+use app\businessLogic\contracts\ContractObjectHistoryCategoryEnum;
 use app\businessLogic\contracts\sensor\ordering\SensorVendorOrder;
 use app\businessLogic\contracts\sensor\SensorVendor;
 use app\businessLogic\contracts\sensor\SensorVendorManagerInterface;
 use app\businessLogic\contracts\sensor\SensorVendorRetrieveResult;
 use app\businessLogic\implementation\sensor\mapper\SensorVendorMapper;
 use app\dataAccess\entities\SensorVendorEntity;
-use app\utils\exceptions\ManagerException;
-use app\utils\Guid;
-use app\utils\Limit;
-use app\utils\ManagerBase;
-use app\utils\order\OrderBase;
+use entityfx\utils\exceptions\ManagerException;
+use entityfx\utils\Guid;
+use entityfx\utils\Limit;
+use entityfx\utils\ManagerBase;
+use entityfx\utils\objectHistory\contracts\enums\HistoryTypeEnum;
+use entityfx\utils\objectHistory\ObjectHistory;
+use entityfx\utils\objectHistory\ObjectHistoryEvent;
+use entityfx\utils\order\OrderBase;
+use Yii;
 use yii\db\IntegrityException;
 use yii\db\Query;
 
@@ -34,6 +39,14 @@ class SensorVendorManager extends ManagerBase implements SensorVendorManagerInte
         } catch (IntegrityException $integrityException) {
             throw new ManagerException("Vendor already exists", "", "", $integrityException);
         }
+
+        $this->triggerComponentEvent(
+            ObjectHistory::EVENT_OBJECT_CHANGED,
+            new ObjectHistoryEvent(
+                new HistoryTypeEnum(HistoryTypeEnum::CREATE),
+                $sensorVendor->id,
+                ContractObjectHistoryCategoryEnum::SENSOR_VENDOR
+            ), Yii::$app->objectHistory);
 
         return $sensorVendor;
     }
@@ -78,10 +91,26 @@ class SensorVendorManager extends ManagerBase implements SensorVendorManagerInte
         $vendorEntity = $this->mapper->contractToEntity($sensorVendor);
         $vendorEntity->setOldAttribute('id', $sensorVendor->id->toBinaryString());
         $vendorEntity->update();
+
+        $this->triggerComponentEvent(
+            ObjectHistory::EVENT_OBJECT_CHANGED,
+            new ObjectHistoryEvent(
+                new HistoryTypeEnum(HistoryTypeEnum::UPDATE),
+                $sensorVendor->id,
+                ContractObjectHistoryCategoryEnum::SENSOR_VENDOR
+            ), Yii::$app->objectHistory);
     }
 
     function delete(Guid $id) {
         SensorVendorEntity::deleteAll('id = :id', [':id' => $id->toBinaryString()]);
+
+        $this->triggerComponentEvent(
+            ObjectHistory::EVENT_OBJECT_CHANGED,
+            new ObjectHistoryEvent(
+                new HistoryTypeEnum(HistoryTypeEnum::DELETE),
+                $id,
+                ContractObjectHistoryCategoryEnum::SENSOR_VENDOR
+            ), Yii::$app->objectHistory);
     }
 
     protected function initMapper() {

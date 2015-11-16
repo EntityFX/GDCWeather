@@ -1,9 +1,9 @@
 <?php
 namespace app\workers;
 
-use app\utils\exceptions\WorkerException;
-use app\utils\workers\implementation\WorkerBase;
-use app\utils\workers\implementation\WorkerWithProxiesBase;
+use entityfx\utils\exceptions\WorkerException;
+use entityfx\utils\workers\implementation\WorkerBase;
+use entityfx\utils\workers\implementation\WorkerWithProxiesBase;
 use yii\base\Exception;
 
 
@@ -22,7 +22,7 @@ final class SyncWorker extends WorkerWithProxiesBase {
         //echo "ended!";
     }
 
-    public function onFailed(\app\utils\exceptions\WorkerException $exception) {
+    public function onFailed(\entityfx\utils\exceptions\WorkerException $exception) {
         //echo "failed";
         return false;
     }
@@ -36,7 +36,7 @@ final class SyncWorker extends WorkerWithProxiesBase {
     }
 
     /**
-     * Инициализация клиентских прокси
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
      */
     protected function initWorkerClientProxies($clientProxies) {
         var_dump($clientProxies);

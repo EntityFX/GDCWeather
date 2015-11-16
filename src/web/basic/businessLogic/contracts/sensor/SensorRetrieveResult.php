@@ -7,7 +7,7 @@
 
 namespace app\businessLogic\contracts\sensor;
 
-use app\utils\RetrieveResult;
+use entityfx\utils\RetrieveResult;
 
 class SensorRetrieveResult extends RetrieveResult {
 

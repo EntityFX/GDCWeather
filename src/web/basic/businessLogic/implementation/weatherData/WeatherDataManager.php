@@ -2,20 +2,28 @@
 
 namespace app\businessLogic\implementation\weatherData;
 
+use app\businessLogic\contracts\ContractObjectHistoryCategoryEnum;
 use app\businessLogic\contracts\weatherData\enums\WeatherDataBackIntervalEnum;
 use app\businessLogic\contracts\weatherData\filters\WeatherDataRetrieveFilter;
 use app\businessLogic\contracts\weatherData\ordering\WeatherDataRetrieveOrder;
 use app\businessLogic\contracts\weatherData\WeatherChartItem;
+use app\businessLogic\contracts\weatherData\WeatherDataItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
 use app\businessLogic\contracts\weatherData\WeatherDataRetrieveResult;
 use app\businessLogic\contracts\weatherData\WeatherDataStatistics;
 use app\businessLogic\implementation\weatherData\mapper\WeatherDataMapper;
 use app\dataAccess\entities\WeatherPollingDataEntity;
+use entityfx\utils\exceptions\ManagerException;
+use entityfx\utils\objectHistory\contracts\enums\HistoryTypeEnum;
+use entityfx\utils\objectHistory\ObjectHistory;
+use entityfx\utils\objectHistory\ObjectHistoryEvent;
 use entityfx\utils\order\OrderBase;
 use DateTime;
 use entityfx\utils\Limit;
 use entityfx\utils\ManagerBase;
 use Yii;
+use yii\base\Exception;
+use yii\db\IntegrityException;
 use yii\db\Query;
 
 class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterface {
@@ -219,5 +227,25 @@ SQL;
 
     protected function initMapper() {
         return new WeatherDataMapper();
+    }
+
+    function create(WeatherDataItem $weatherData)
+    {
+        $weatherEntity = $this->mapper->contractToEntity($weatherData);
+        try {
+            $weatherEntity->save();
+        } catch (\Exception $exception) {
+            throw new ManagerException("Cannot create weather data item", "", "", $exception);
+        }
+
+        $this->triggerComponentEvent(
+            ObjectHistory::EVENT_OBJECT_CHANGED,
+            new ObjectHistoryEvent(
+                new HistoryTypeEnum(HistoryTypeEnum::CREATE),
+                $weatherData->id,
+                ContractObjectHistoryCategoryEnum::WEATHER_SENSOR_DATA
+            ), Yii::$app->objectHistory);
+
+        return $weatherData;
     }
 }

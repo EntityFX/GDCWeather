@@ -149,4 +149,15 @@ class WeatherDataStatistics extends Object {
     public function getAverageMmHg() {
         return WeatherChartItem::calculateMmHg($this->_averagePressure);
     }
+
+    public function toApi() {
+        return [
+            "averageTemperature" => $this->_averageTemperature,
+            "minimumTemperature" => $this->_minimumTemperature,
+            "maximumTemperature" => $this->_maximumTemperature,
+            "averagePressure" => $this->_averagePressure,
+            "minimumPressure" => $this->_minimumPressure,
+            "maximumPressure" => $this->_maximumPressure
+        ];
+    }
 }

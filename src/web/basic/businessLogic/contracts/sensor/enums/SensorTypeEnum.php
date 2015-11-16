@@ -1,7 +1,7 @@
 <?php
 
 namespace app\businessLogic\contracts\sensor\enums;
-use app\utils\enum\EnumBase;
+use entityfx\utils\enum\EnumBase;
 
 /**
  * @link      http://entityfx.ru

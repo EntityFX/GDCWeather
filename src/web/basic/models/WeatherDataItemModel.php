@@ -23,6 +23,8 @@ class WeatherDataItemModel extends Model {
 
     public $dateTime;
 
+    public $sensorId;
+
     public function attributeLabels() {
         return [
             'id'       => Yii::t('app', '#ID#'),
@@ -30,6 +32,12 @@ class WeatherDataItemModel extends Model {
             'pressure' => Yii::t('app', '#Pressure#'),
             'alt'      => Yii::t('app', '#Altitude#'),
             'dateTime' => Yii::t('app', '#Date#'),
+        ];
+    }
+
+    public function rules() {
+        return [
+            [['temp', 'pressure', "sensorId", "alt"], 'required']
         ];
     }
 }

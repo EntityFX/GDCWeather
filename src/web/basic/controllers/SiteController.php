@@ -15,6 +15,7 @@ use app\businessLogic\contracts\weatherData\WeatherDataItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
 use app\businessLogic\implementation\sensor\SensorManager;
 use app\businessLogic\implementation\sensor\SensorVendorManager;
+use app\businessLogic\implementation\weatherData\WeatherDataManager;
 use app\models\FilterFormModel;
 use app\models\WeatherDataItemModel;
 use entityfx\utils\dataProvider\SimpleListDataProvider;
@@ -22,9 +23,12 @@ use entityfx\utils\enum\OrderDirectionEnum;
 use entityfx\utils\Guid;
 use entityfx\utils\Limit;
 use entityfx\utils\objectHistory\contracts\enums\HistoryTypeEnum;
-use entityfx\utils\objectHistory\contracts\ObjectHistory;
+use entityfx\utils\objectHistory\contracts\ObjectHistoryItem;
 use entityfx\utils\objectHistory\implementation\mapper\ObjectHistoryMapper;
+use entityfx\utils\objectHistory\implementation\ObjectHistoryManager;
 use entityfx\utils\objectHistory\implementation\repositories\ObjectHistoryRepository;
+use entityfx\utils\objectHistory\ObjectHistory;
+use entityfx\utils\objectHistory\ObjectHistoryEvent;
 use entityfx\utils\webService\implementation\clientProxies\mapper\ClientProxyEndpointMapper;
 use entityfx\utils\webService\implementation\clientProxies\mapper\ClientProxyMapper;
 use entityfx\utils\webService\implementation\clientProxies\repositories\WebClientProxyRepository;
@@ -33,6 +37,8 @@ use entityfx\utils\workers\implementation\repositories\WorkerRepository;
 use entityfx\utils\workers\implementation\WorkerManager;
 use entityfx\utils\workers\WorkerFactory;
 use Yii;
+use yii\base\Event;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 
 /**
@@ -58,18 +64,38 @@ class SiteController extends Controller {
         parent::__construct($id, $module, $config);
         $this->_weatherManager = $weatherManager;
 
-        //$clientProxyRepository = new WebClientProxyRepository(new ClientProxyMapper(), new ClientProxyEndpointMapper());
-        //$wm = new WorkerManager(new WorkerRepository(new WorkerMapper()));
-        //WorkerFactory::createWorkerAndRun(1);
+        $sensorMananger = new SensorManager();
+        $sensors = $sensorMananger->retrieve(new Limit(), new SensorOrder());
 
-        $objectHistoryRepository = new ObjectHistoryRepository(new ObjectHistoryMapper());
-        $dm = new ObjectHistory();
-        $dm->guid = Guid::generate();
-        $dm->type = new HistoryTypeEnum(HistoryTypeEnum::CREATE);
-        $dm->category = 0;
-        $dm->priority = 1;
-        $objectHistoryRepository->store($dm);
-        $objectHistoryRepository->read(new \DateTime('today'), new \DateTime('now'));
+        $weatherDataItem = new WeatherDataItem();
+        $weatherDataItem->altitude = 765;
+        $weatherDataItem->pressure = 98 * mt_rand(900, 1100);
+        $weatherDataItem->temperature = mt_rand(24, 27);
+        $weatherDataItem->createDateTime = new \DateTime();
+
+        $sensor = new Sensor();
+        $sensor->id = Guid::fromArray([
+            0 => 13,
+                    1 => 56,
+                    2 => 29,
+                    3 => 244,
+                    4 => 95,
+                    5 => 122,
+                    6 => 66,
+                    7 => 89,
+                    8 => 175,
+                    9 => 41,
+                    10 => 15,
+                    11 => 195,
+                    12 => 200,
+                    13 => 234,
+                    14 => 132,
+                    15 => 133
+                ]);
+
+        $weatherDataItem->sensor = $sensor;
+        $weatherDataManager = new WeatherDataManager();
+        $weatherDataManager->create($weatherDataItem);
     }
 
     /**
@@ -97,12 +123,9 @@ class SiteController extends Controller {
             }
         }
 
-
         $limit = new Limit();
 
         $this->_weatherManager->retrieveChartData($retrieveFilter);
-
-        //var_dump($result->totalItems);
 
         $weatherDataProvider = new SimpleListDataProvider(
             [

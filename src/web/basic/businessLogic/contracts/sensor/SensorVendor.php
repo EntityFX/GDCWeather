@@ -1,7 +1,7 @@
 <?php
 namespace app\businessLogic\contracts\sensor;
 
-use app\utils\Guid;
+use entityfx\utils\Guid;
 use yii\base\Object;
 
 /**
@@ -11,7 +11,7 @@ use yii\base\Object;
  */
 class SensorVendor extends Object {
     /**
-     * @var \app\utils\Guid
+     * @var \entityfx\utils\Guid
      */
     private $_id;
 
@@ -29,14 +29,14 @@ class SensorVendor extends Object {
     }
 
     /**
-     * @return \app\utils\Guid
+     * @return \entityfx\utils\Guid
      */
     public function getId() {
         return $this->_id;
     }
 
     /**
-     * @param \app\utils\Guid $id
+     * @param \entityfx\utils\Guid $id
      */
     public function setId(Guid $id) {
         $this->_id = $id;

@@ -17,8 +17,6 @@ use app\businessLogic\contracts\weatherData\WeatherDataItem;
 use app\businessLogic\contracts\weatherData\WeatherDataManagerInterface;
 use app\businessLogic\contracts\weatherData\WeatherDataRetrieveResult;
 use app\businessLogic\contracts\weatherData\WeatherDataStatistics;
-use app\dataAccess\entities\SensorVendorEntity;
-use entityfx\utils\Guid;
 use entityfx\utils\Limit;
 use entityfx\utils\ManagerBase;
 
@@ -113,7 +111,7 @@ class FakeWeatherDataManager extends ManagerBase implements WeatherDataManagerIn
     /**
      * @param WeatherDataRetrieveFilter $filter
      *
-     * @param \app\utils\Limit          $limit
+     * @param \entityfx\utils\Limit          $limit
      * @param WeatherDataRetrieveOrder  $order
      * @return WeatherDataRetrieveResult $result
      */
@@ -204,5 +202,10 @@ class FakeWeatherDataManager extends ManagerBase implements WeatherDataManagerIn
         }
 
         return $dataItems;
+    }
+
+    function create(WeatherDataItem $weatherData)
+    {
+        // TODO: Implement create() method.
     }
 }
