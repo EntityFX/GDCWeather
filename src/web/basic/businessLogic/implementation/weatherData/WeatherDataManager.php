@@ -26,37 +26,40 @@ use yii\base\Exception;
 use yii\db\IntegrityException;
 use yii\db\Query;
 
-class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterface {
+class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterface
+{
 
     private $_intervalMap = [
-        WeatherDataBackIntervalEnum::LAST_HOUR        => '-1 hour',
+        WeatherDataBackIntervalEnum::LAST_HOUR => '-1 hour',
         WeatherDataBackIntervalEnum::LAST_THREE_HOURS => '-3 hours',
-        WeatherDataBackIntervalEnum::LAST_SIX_HOURS   => '-6 hours',
-        WeatherDataBackIntervalEnum::LAST_HALF_DAY    => '-12 hours',
-        WeatherDataBackIntervalEnum::LAST_DAY         => '-1 day',
-        WeatherDataBackIntervalEnum::LAST_WEEK        => '-1 week',
-        WeatherDataBackIntervalEnum::LAST_YEAR        => '-1 year',
+        WeatherDataBackIntervalEnum::LAST_SIX_HOURS => '-6 hours',
+        WeatherDataBackIntervalEnum::LAST_HALF_DAY => '-12 hours',
+        WeatherDataBackIntervalEnum::LAST_DAY => '-1 day',
+        WeatherDataBackIntervalEnum::LAST_WEEK => '-1 week',
+        WeatherDataBackIntervalEnum::LAST_YEAR => '-1 year',
     ];
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
     }
 
     /**
      * @param WeatherDataRetrieveFilter $filter
      *
-     * @param \entityfx\utils\Limit         $limit
+     * @param \entityfx\utils\Limit $limit
      * @param WeatherDataRetrieveOrder $order
      *
      * @return WeatherDataRetrieveResult
      */
-    public function retrieve(WeatherDataRetrieveFilter $filter, Limit $limit, WeatherDataRetrieveOrder $order) {
+    public function retrieve(WeatherDataRetrieveFilter $filter, Limit $limit, WeatherDataRetrieveOrder $order)
+    {
         $result = new WeatherDataRetrieveResult();
 
         $lastDataItem = WeatherPollingDataEntity::find()
-                                                ->orderBy(['id' => SORT_DESC])
-                                                ->limit(1)
-                                                ->one();
+            ->orderBy(['id' => SORT_DESC])
+            ->limit(1)
+            ->one();
 
         if ($lastDataItem != null) {
             $result->lastMeasure = $this->mapper->entityToContract($lastDataItem);
@@ -64,23 +67,16 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
 
         $retrieveQuery = WeatherPollingDataEntity::find();
 
-        $toDateTime   = clone $filter->startDateTime;
-        $fromDateTime = $filter->startDateTime;
 
-        $res                                    = \DateInterval::createFromDateString(
-            $this->_intervalMap[$filter->backInterval->getValue()]
-        );
+        $dateTimeInterval = $this->prepareDateTimeInterval($filter);
 
-        $fromDateTime->add($res);
-
-        $fromDateTimeFormatted = $fromDateTime->format('Y-m-d H:i:s');
-        $toDateTimeFormatted   = $toDateTime->format('Y-m-d H:i:s');
-        $retrieveQuery                          = $retrieveQuery->where(
+        $fromDateTimeFormatted = $dateTimeInterval['fromDateTime']->format('Y-m-d H:i:s');
+        $toDateTimeFormatted = $dateTimeInterval['toDateTime']->format('Y-m-d H:i:s');
+        $retrieveQuery = $retrieveQuery->where(
             ['between', 'dateTime', $fromDateTimeFormatted, $toDateTimeFormatted]
         );
 
-
-        $statisticsQuery  = $retrieveQuery->prepare(new Query());
+        $statisticsQuery = $retrieveQuery->prepare(new Query());
         $statisticsResult = $statisticsQuery->select(
             [
                 'MAX(`temp`) AS maxTemp',
@@ -92,7 +88,7 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
             ]
         )->one();
 
-        $weatherDataStatistics                     = new WeatherDataStatistics();
+        $weatherDataStatistics = new WeatherDataStatistics();
         $weatherDataStatistics->maximumTemperature = $statisticsResult['maxTemp'];
         $weatherDataStatistics->minimumTemperature = $statisticsResult['minTemp'];
         $weatherDataStatistics->averageTemperature = $statisticsResult['avgTemp'];
@@ -116,19 +112,20 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
                 )
             )
             ->all();
-        $weatherDataItems       = [];
+        $weatherDataItems = [];
         foreach ($weatherDataEntityItems as $item) {
             $weatherDataItems[] = $this->mapper->entityToContract($item);
         }
 
         $result->statistics = $weatherDataStatistics;
-        $result->dataItems  = $weatherDataItems;
+        $result->dataItems = $weatherDataItems;
         $result->totalItems = $countItems;
 
         return $result;
     }
 
-    public function getOrderField(OrderBase $ord) {
+    public function getOrderField(OrderBase $ord)
+    {
         switch ($ord->getField()) {
             case WeatherDataRetrieveOrder::ID:
                 return 'id';
@@ -145,15 +142,16 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
         }
     }
 
-    public function getIntervalsList() {
+    public function getIntervalsList()
+    {
         return [
-            WeatherDataBackIntervalEnum::LAST_HOUR        => 'Last hour',
+            WeatherDataBackIntervalEnum::LAST_HOUR => 'Last hour',
             WeatherDataBackIntervalEnum::LAST_THREE_HOURS => 'Last 3 hours',
-            WeatherDataBackIntervalEnum::LAST_SIX_HOURS   => 'Last 6 hours',
-            WeatherDataBackIntervalEnum::LAST_HALF_DAY    => 'Last 12 hours',
-            WeatherDataBackIntervalEnum::LAST_DAY         => 'Last day',
-            WeatherDataBackIntervalEnum::LAST_WEEK        => 'Last week',
-            WeatherDataBackIntervalEnum::LAST_YEAR        => 'Last year',
+            WeatherDataBackIntervalEnum::LAST_SIX_HOURS => 'Last 6 hours',
+            WeatherDataBackIntervalEnum::LAST_HALF_DAY => 'Last 12 hours',
+            WeatherDataBackIntervalEnum::LAST_DAY => 'Last day',
+            WeatherDataBackIntervalEnum::LAST_WEEK => 'Last week',
+            WeatherDataBackIntervalEnum::LAST_YEAR => 'Last year',
         ];
     }
 
@@ -161,7 +159,8 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
      * @param WeatherDataRetrieveFilter $filter
      * @return \app\businessLogic\contracts\weatherData\WeatherChartItem[]
      */
-    function retrieveChartData(WeatherDataRetrieveFilter $filter) {
+    function retrieveChartData(WeatherDataRetrieveFilter $filter)
+    {
         $result = [];
 
         $weatherDataTableName = WeatherPollingDataEntity::tableName();
@@ -191,30 +190,22 @@ class WeatherDataManager extends ManagerBase implements WeatherDataManagerInterf
             GROUP BY TimeRange
 SQL;
 
-        $toDateTime   = clone $filter->startDateTime;
-        $fromDateTime = $filter->startDateTime;
-        $fromDateTime->add(
-            \DateInterval::createFromDateString(
-                $this->_intervalMap[$filter->backInterval->getValue()]
-            )
-        );
+        $dateTimeInterval = $this->prepareDateTimeInterval($filter);
 
         $dbCommand = Yii::$app->db->createCommand($sql)
-            ->bindValue(':from', $fromDateTime->format('Y-m-d H:i:s'))
-            ->bindValue(':to', $toDateTime->format('Y-m-d H:i:s'))
+            ->bindValue(':from', $dateTimeInterval['fromDateTime']->format('Y-m-d H:i:s'))
+            ->bindValue(':to', $dateTimeInterval['toDateTime']->format('Y-m-d H:i:s'))
             ->bindValue(':countPoints', $filter->countPoints);
 
-        //var_dump($dbCommand->rawSql);
-        //die('');
 
         $dbRes = $dbCommand->queryAll();
         $result = [];
         /** @var WeatherPollingDataEntity $item */
         foreach ($dbRes as $item) {
-            $resItem                  = new WeatherChartItem();
-            $resItem->key             = $item['TimeRange'];
-            $resItem->startDateTime   = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeStart']);
-            $resItem->endDateTime     = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeEnd']);
+            $resItem = new WeatherChartItem();
+            $resItem->key = $item['TimeRange'];
+            $resItem->startDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeStart']);
+            $resItem->endDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $item['TimeRangeEnd']);
             $resItem->averageTemperature = $item['AverageTemperature'];
             $resItem->maximumTemperature = $item['MaximumTemperature'];
             $resItem->minimumTemperature = $item['MinimumTemperature'];
@@ -223,10 +214,6 @@ SQL;
         }
 
         return $result;
-    }
-
-    protected function initMapper() {
-        return new WeatherDataMapper();
     }
 
     function create(WeatherDataItem $weatherData)
@@ -247,5 +234,25 @@ SQL;
             ), Yii::$app->objectHistory);
 
         return $weatherData;
+    }
+
+    protected function initMapper()
+    {
+        return new WeatherDataMapper();
+    }
+
+    private function prepareDateTimeInterval(WeatherDataRetrieveFilter $filter) {
+        $toDateTime   = clone $filter->startDateTime;
+        $fromDateTime = clone $filter->startDateTime;
+        $fromDateTime->add(
+            \DateInterval::createFromDateString(
+                $this->_intervalMap[$filter->backInterval->getValue()]
+            )
+        );
+
+        return [
+            'fromDateTime' => $fromDateTime,
+            'toDateTime' => $toDateTime
+        ];
     }
 }

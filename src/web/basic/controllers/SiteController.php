@@ -19,6 +19,12 @@ use app\businessLogic\implementation\weatherData\WeatherDataManager;
 use app\models\FilterFormModel;
 use app\models\WeatherDataItemModel;
 use entityfx\utils\dataProvider\SimpleListDataProvider;
+use entityfx\utils\dataReplication\contracts\ReplicatedObject;
+use entityfx\utils\dataReplication\implementation\mapper\ReplicatedObjectMapper;
+use entityfx\utils\dataReplication\implementation\mapper\ReplicationHistoryMapper;
+use entityfx\utils\dataReplication\implementation\repositories\DataReplicationManager;
+use entityfx\utils\dataReplication\implementation\repositories\DataReplicationRepository;
+use entityfx\utils\dataReplication\implementation\repositories\ReplicatedObjectRepository;
 use entityfx\utils\enum\OrderDirectionEnum;
 use entityfx\utils\Guid;
 use entityfx\utils\Limit;
@@ -96,6 +102,15 @@ class SiteController extends Controller {
         $weatherDataItem->sensor = $sensor;
         $weatherDataManager = new WeatherDataManager();
         $weatherDataManager->create($weatherDataItem);
+
+        $drm = new \entityfx\utils\dataReplication\implementation\DataReplicationManager(
+            new DataReplicationRepository(new ReplicationHistoryMapper()),
+            new ReplicatedObjectRepository(new ReplicatedObjectMapper()),
+            new ObjectHistoryRepository(new ObjectHistoryMapper())
+        );
+
+        $rc = $drm->beginUpdate();
+        $drm->endUpdate();
     }
 
     /**
@@ -113,7 +128,6 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-
         $filterFormModel = new FilterFormModel();
         $retrieveFilter  = new WeatherDataRetrieveFilter();
         if (Yii::$app->request->isPost) {
@@ -122,7 +136,6 @@ class SiteController extends Controller {
                 $retrieveFilter->backInterval = new WeatherDataBackIntervalEnum((int)$filterFormModel->backPeriod);
             }
         }
-
         $limit = new Limit();
 
         $this->_weatherManager->retrieveChartData($retrieveFilter);

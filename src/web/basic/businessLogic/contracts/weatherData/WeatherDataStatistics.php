@@ -42,17 +42,17 @@ class WeatherDataStatistics extends Object {
     private $_maximumTemperature = 0.0;
 
     /**
-     * @var float
+     * @var int
      */
-    private $_averagePressure = 0.0;
+    private $_averagePressure = 0;
     /**
-     * @var float
+     * @var int
      */
-    private $_minimumPressure = 0.0;
+    private $_minimumPressure = 0;
     /**
-     * @var float
+     * @var int
      */
-    private $_maximumPressure = 0.0;
+    private $_maximumPressure = 0;
 
     /**
      * @return float
@@ -65,7 +65,7 @@ class WeatherDataStatistics extends Object {
      * @param float $averagePressure
      */
     public function setAveragePressure($averagePressure) {
-        $this->_averagePressure = $averagePressure;
+        $this->_averagePressure = (int)$averagePressure;
     }
 
     /**
@@ -79,7 +79,7 @@ class WeatherDataStatistics extends Object {
      * @param float $minimumPressure
      */
     public function setMinimumPressure($minimumPressure) {
-        $this->_minimumPressure = $minimumPressure;
+        $this->_minimumPressure = (int)$minimumPressure;
     }
 
     /**
@@ -93,7 +93,7 @@ class WeatherDataStatistics extends Object {
      * @param float $maximumPressure
      */
     public function setMaximumPressure($maximumPressure) {
-        $this->_maximumPressure = $maximumPressure;
+        $this->_maximumPressure = (int)$maximumPressure;
     }
 
     /**
