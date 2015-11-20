@@ -1,6 +1,6 @@
 <?php
 $params = require(__DIR__ . '/params.php');
-require(__DIR__ . '/ioc.php');
+require(__DIR__ . '/di.php');
 
 $config = [
     'id' => 'basic',
