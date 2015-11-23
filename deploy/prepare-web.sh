@@ -13,39 +13,47 @@ VHOST_WEB_SERVER_NAME="localhost"
 
 IS_PRODUCTION=0
 
-while test $# -gt 0; do
+TEMP=`getopt -o hs:u::p::d:l::n:: -l mysql-host:,mysql-user::,mysql-pass::,mysql-db:,vhost-path::,vhost-server-name:: -n 'prepare-web.params.sh' -- "$@"`
+
+HELP="Usage: ./prepare-web.sh --mysql-host=%mysql-host% --mysql-user=%mysql-user% --mysql-pass=%mysql-password% --mysql-db=%db% --vhost-path='%path%' --vhost-server-name='%hostname%'"
+
+eval set -- "$TEMP"
+
+
+
+while true; do
     case "$1" in
         -h|--help)
-            echo "HELP"
+            echo "$HELP"
             exit 0
             ;;
-        --mysql-host*)
-            MYSQL_HOST=`echo $1 | sed -e 's/^[^=]*=//g'`
-            shift
+        -s|--mysql-host)
+            MYSQL_HOST=`echo $2 | sed -e 's/^[^=]*=//g'`
+            shift 2
             ;;
-        --mysql-user*)
-            MYSQL_USER=`echo $1 | sed -e 's/^[^=]*=//g'`
-            shift
+        -u|--mysql-user)
+            MYSQL_USER=`echo $2 | sed -e 's/^[^=]*=//g'`
+            shift 2
             ;;
-        --mysql-pass*)
-            MYSQL_PASS=`echo $1 | sed -e 's/^[^=]*=//g'`
-            shift
+        -p|--mysql-pass)
+            MYSQL_PASS=`echo $2 | sed -e 's/^[^=]*=//g'`
+            shift 2
             ;;
-        --mysql-db*)
-            MYSQL_DB_NAME=`echo $1 | sed -e 's/^[^=]*=//g'`
-            shift
+        -d|--mysql-db)
+            MYSQL_DB_NAME=`echo $2 | sed -e 's/^[^=]*=//g'`
+            shift 2
             ;;
-        --vhost-path*)
-            VHOST_DOCUMENT_ROOT=`echo $1 | sed -e 's/^[^=]*=//g'`
-            shift
+        -l|--vhost-path)
+            VHOST_DOCUMENT_ROOT=`echo $2 | sed -e 's/^[^=]*=//g'`
+            shift 2
             ;;
-        --vhost-server-name*)
-            VHOST_WEB_SERVER_NAME=`echo $1 | sed -e 's/^[^=]*=//g'`
-            shift
+        -n|--vhost-server-name)
+            VHOST_WEB_SERVER_NAME=`echo $2 | sed -e 's/^[^=]*=//g'`
+            shift 2
             ;;
         --prod)
             IS_PRODUCTION=1
-            shift
+            shift 2
             ;;
         *)
             break
